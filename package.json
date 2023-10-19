@@ -2,7 +2,6 @@
   "name": "chwitter",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "dev:express": "DEBUG=chwitter:* node --watch server.js",
