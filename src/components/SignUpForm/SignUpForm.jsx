@@ -50,7 +50,6 @@ export default function SignUpForm({ setUser, status, setStatus }) {
                     name="username"
                     value={userData.username}
                     onChange={handleChange}
-                    placeholder="Between 2 to 15 characters"
                     autoComplete="off"
                     required
                     className="border border-white w-4/5 py-1 px-2 mt-1 mx-8 rounded"
@@ -74,7 +73,6 @@ export default function SignUpForm({ setUser, status, setStatus }) {
                     value={userData.email}
                     onChange={handleChange}
                     autoComplete="off"
-                    placeholder="Enter a valid email address"
                     required
                     className="border border-white w-4/5 py-1 px-2 mt-1 mx-8 rounded"
                     style={{
@@ -93,7 +91,6 @@ export default function SignUpForm({ setUser, status, setStatus }) {
                     value={userData.password}
                     onChange={handleChange}
                     autoComplete="off"
-                    placeholder="Minimum 6 characters"
                     required
                     className="border border-white w-4/5 py-1 px-2 mt-1 mx-8 rounded"
                     style={{
@@ -113,14 +110,13 @@ export default function SignUpForm({ setUser, status, setStatus }) {
                     value={userData.repeat}
                     onChange={handleChange}
                     autoComplete="off"
-                    placeholder="Repeat password"
                     required
                     className="border border-white w-4/5 py-1 px-2 mt-1 mx-8 rounded"
                     style={{
-                        border: userData.password !== userData.repeat ? "2px solid red" : ""
+                        border: userData.password.length >= 6 && userData.repeat !== "" && userData.password !== userData.repeat ? "2px solid red" : ""
                     }}
                     ></input>
-                    {(userData.password !== userData.repeat) && (<div className="text-red-300 text-sm mx-8 -mb-2">Both passwords are not the same</div>
+                    {(userData.password.length >= 6 && userData.repeat !== "" && userData.password !== userData.repeat) && (<div className="text-red-300 text-sm mx-8 -mb-2">Both passwords are not the same</div>
                     )}
                 <div className="mt-2">
                     <button
