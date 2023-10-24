@@ -6,6 +6,7 @@
   margin: 50px 0 0 -32px;
   padding: 0;
   font-size: 18px;
+  display: flex;
 }
 
 .react-tabs__tab {
@@ -21,6 +22,24 @@
   width: 170px;
   cursor: pointer;
   text-align: center;
+  position: relative;
+}
+
+.react-tabs__tab::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 5px;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  background: #fff;
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+
+.react-tabs__tab--selected::before {
+  transform: scaleX(1);
 }
 
 .react-tabs__tab--selected {
@@ -33,17 +52,6 @@
 
 .react-tabs__tab:focus {
   outline: none;
-}
-
-.react-tabs__tab:focus:after {
-  content: '';
-  position: absolute;
-  width: 170px;
-  height: 5px;
-  left: 0;
-  right: -4px;
-  bottom: -5px;
-  background: #fff;
 }
 
 .react-tabs__tab-panel {
