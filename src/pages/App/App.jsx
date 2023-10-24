@@ -1,8 +1,12 @@
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import LoginForm from "../../components/LoginForm/LoginForm";
 import SignUpForm from "../../components/SignUpForm/SignUpForm";
 import NavBar from "../../components/NavBar/NavBar";
+import HomePage from '../HomePage/HomePage';
+import ErrorPage from '../ErrorPage/ErrorPage';
+import ProfilePage from '../ProfilePage/ProfilePage';
 
 function App() {
 
@@ -23,7 +27,6 @@ function App() {
           <Tab>Sign Up</Tab>
           <Tab>Login</Tab>
         </TabList>
-
         <TabPanel>
         <SignUpForm />
         </TabPanel>
@@ -32,6 +35,11 @@ function App() {
         </TabPanel>
       </Tabs>
     </main>
+    <Routes>
+      <Route path="/home" element={<HomePage />} />
+      <Route path="/*" element={<ErrorPage />} />
+      <Route path="/username" element={<ProfilePage />} />
+    </Routes>
     </>
   )
 }
