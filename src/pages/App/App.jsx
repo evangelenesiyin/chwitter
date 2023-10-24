@@ -1,5 +1,7 @@
+import debug from "debug";
+import { useState, useEffect } from "react";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import './App.css';
 import LoginForm from "../../components/LoginForm/LoginForm";
 import SignUpForm from "../../components/SignUpForm/SignUpForm";
@@ -7,12 +9,38 @@ import NavBar from "../../components/NavBar/NavBar";
 import HomePage from '../HomePage/HomePage';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import ProfilePage from '../ProfilePage/ProfilePage';
+import { getUser } from "../../utilities/users-service";
+
+
+const log = debug("chwitter:src:App");
+localStorage.debug = "chwitter:*";
+
+log("Start React");
 
 function App() {
+  const [user, setUser] = useState(getUser());
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (user && location.pathname === "/") {
+      navigate("/home");
+    }
+    }, [user, navigate, location]);
 
   return (
     <>
-      <NavBar />
+    { user ? (
+      <>
+      <Routes>
+      <Route path="/home" element={<HomePage setUser={setUser} />} />
+      <Route path="/:username" element={<ProfilePage />} />
+      <Route path="/*" element={<ErrorPage />} />
+    </Routes>
+    </>
+    ) : (
+      <>
+    <NavBar />
     <main className="min-h-screen min-w-screen bg-beige p-0 m-0 grid grid-cols-3">
       <div className="col-span-1 items-center justify-center h-screen flex">
         <div className="text-title text-white text-right font-extrabold  break-words leading-tight mb-16">
@@ -28,18 +56,15 @@ function App() {
           <Tab>Login</Tab>
         </TabList>
         <TabPanel>
-        <SignUpForm />
+        <SignUpForm setUser={setUser} />
         </TabPanel>
         <TabPanel>
         <LoginForm />
         </TabPanel>
       </Tabs>
     </main>
-    <Routes>
-      <Route path="/home" element={<HomePage />} />
-      <Route path="/*" element={<ErrorPage />} />
-      <Route path="/username" element={<ProfilePage />} />
-    </Routes>
+    </>
+    )}
     </>
   )
 }
