@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUpService } from "../../utilities/users-service";
 
-export default function SignUpForm({ setUser }) {
+export default function SignUpForm({ setUser, status, setStatus }) {
     const [userData, setUserData] = useState({
     email: "",
     username: "",
@@ -37,8 +37,15 @@ export default function SignUpForm({ setUser }) {
         } else {
             alert("Try again.")
         }
+        setStatus("error");
+    } finally {
+        setStatus(null);
     }
   }
+
+  const isFormValid = () => {
+    return userData.username && userData.email && userData.password && userData.repeat && userData.password === userData.repeat && status !== "error";
+  };
 
     return(
         <div className="col-span-1 -ml-16">
@@ -55,7 +62,17 @@ export default function SignUpForm({ setUser }) {
                     placeholder="Between 2 to 15 characters"
                     autoComplete="off"
                     required
-                    className="border border-white w-4/5 py-1 px-2 mt-1 mx-8 rounded"></input>
+                    className="border border-white w-4/5 py-1 px-2 mt-1 mx-8 rounded"
+                    style={{
+                    border:
+                        (userData.username !== "" && userData.username.length < 2) || userData.username.length > 15
+                        ? "2px solid red"
+                        : "",
+                    }}
+                    ></input>
+                    {userData.username !== "" && (userData.username.length < 2 || userData.username.length > 15) && (
+                    <div className="text-red-300 text-sm mx-8 -mb-2">Username must be between 2 to 15 characters</div>
+                    )}
                 <div className="pt-6">
                     <label htmlFor="email" className="text-white text-lg mx-8">Email Address</label>
                 </div>
@@ -68,7 +85,13 @@ export default function SignUpForm({ setUser }) {
                     autoComplete="off"
                     placeholder="Enter a valid email address"
                     required
-                    className="border border-white w-4/5 py-1 px-2 mt-1 mx-8 rounded"></input>
+                    className="border border-white w-4/5 py-1 px-2 mt-1 mx-8 rounded"
+                    style={{
+                        border:
+                        userData.email !== "" && !userData.email.includes("@") ? "2px solid red" : ""
+                    }}
+                    ></input>
+                    {(userData.email !== "" && !userData.email.includes("@")) && (<div className="text-red-300 text-sm mx-8 -mb-2">Email address must contain '@'</div>)}
                 <div className="pt-6">
                     <label htmlFor="password" className="text-white text-lg mx-8">Password</label>
                 </div>
@@ -81,9 +104,16 @@ export default function SignUpForm({ setUser }) {
                     autoComplete="off"
                     placeholder="Minimum 6 characters"
                     required
-                    className="border border-white w-4/5 py-1 px-2 mt-1 mx-8 rounded"></input>
+                    className="border border-white w-4/5 py-1 px-2 mt-1 mx-8 rounded"
+                    style={{
+                        border: userData.password !== "" && userData.password.length < 6 ? "2px solid red" : ""
+                    }}
+                    ></input>
+                    {(userData.password !== "" && userData.password.length < 6) && (
+                    <div className="text-red-300 text-sm mx-8 -mb-2">Password must be at least 6 characters</div>
+                    )}
                 <div className="pt-6">
-                    <label htmlFor="confirm-password" className="text-white text-lg mx-8">Confirm Password</label>
+                    <label htmlFor="confirm-password" className="text-white text-lg mx-8">Repeat Password</label>
                 </div>
                     <input
                     type="password"
@@ -92,11 +122,25 @@ export default function SignUpForm({ setUser }) {
                     value={userData.repeat}
                     onChange={handleChange}
                     autoComplete="off"
-                    placeholder="Confirm your password"
+                    placeholder="Repeat password"
                     required
-                    className="border border-white w-4/5 py-1 px-2 mt-1 mx-8 rounded"></input>
+                    className="border border-white w-4/5 py-1 px-2 mt-1 mx-8 rounded"
+                    style={{
+                        border: userData.password !== userData.repeat ? "2px solid red" : ""
+                    }}
+                    ></input>
+                    {(userData.password !== userData.repeat) && (<div className="text-red-300 text-sm mx-8 -mb-2">Both passwords are not the same</div>
+                    )}
                 <div className="mt-2">
-                    <button type="submiit" className="border border-coral bg-coral text-white text-lg font-bold shadow-md rounded w-2/3 py-2 mx-16 my-8">Sign Up</button>
+                    <button
+                    type="submit"
+                    className="border border-coral bg-coral text-white text-lg font-bold shadow-md rounded w-2/3 py-2 mx-16 my-8"
+                    style={{
+                    background: isFormValid() ? '' : 'darkgrey',
+                    border: isFormValid() ? 'none' : '2px solid darkgrey',
+                    cursor: isFormValid() ? '' : "not-allowed",
+                    }}
+                    >Sign Up</button>
                 </div>
             </form>
         </div>

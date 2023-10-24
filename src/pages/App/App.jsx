@@ -19,6 +19,7 @@ log("Start React");
 
 function App() {
   const [user, setUser] = useState(getUser());
+  const [status, setStatus] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -56,10 +57,10 @@ function App() {
           <Tab>Login</Tab>
         </TabList>
         <TabPanel>
-        <SignUpForm setUser={setUser} />
+        <SignUpForm setUser={setUser} status={status} setStatus={setStatus} />
         </TabPanel>
         <TabPanel>
-        <LoginForm setUser={setUser}/>
+        <LoginForm setUser={setUser} status={status} setStatus={setStatus} />
         </TabPanel>
       </Tabs>
     </main>
