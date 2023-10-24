@@ -21,22 +21,13 @@ export default function SignUpForm({ setUser, status, setStatus }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (userData.password !== userData.repeat) {
-        alert("Entered passwords do not match")
-    }
     try {
         const user = await signUpService(userData);
         if (user !== null & user !== undefined) {
-            alert("Sign up successful!")
             setUser(user);
             navigate("/home");
         }
     } catch (err) {
-        if (err.message === "Unexpected end of JSON input") {
-            alert("Please try again later.")
-        } else {
-            alert("Try again.")
-        }
         setStatus("error");
     } finally {
         setStatus(null);
@@ -141,6 +132,9 @@ export default function SignUpForm({ setUser, status, setStatus }) {
                     cursor: isFormValid() ? '' : "not-allowed",
                     }}
                     >Sign Up</button>
+                    {status === "error" && (
+                    <div className="text-red-300 text-sm mx-8">An error occurred. Please try again later.</div>
+                    )}
                 </div>
             </form>
         </div>
