@@ -23,6 +23,7 @@ module.exports = {
       },
       fontSize: {
         body: "16px",
+        title: "5rem",
       },
       colors: {
         beige: "#F5DDCB",
