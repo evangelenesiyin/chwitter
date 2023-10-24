@@ -17,8 +17,10 @@
   bottom: -1px;
   position: relative;
   list-style: none;
-  padding: 15px 50px;
+  padding: 15px;
+  width: 170px;
   cursor: pointer;
+  text-align: center;
 }
 
 .react-tabs__tab--selected {
@@ -36,8 +38,9 @@
 .react-tabs__tab:focus:after {
   content: '';
   position: absolute;
+  width: 170px;
   height: 5px;
-  left: -4px;
+  left: 0;
   right: -4px;
   bottom: -5px;
   background: #fff;
