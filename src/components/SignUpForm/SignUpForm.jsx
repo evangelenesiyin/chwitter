@@ -23,7 +23,7 @@ export default function SignUpForm({ setUser, status, setStatus }) {
     e.preventDefault();
     try {
         const user = await signUpService(userData);
-        if (user !== null & user !== undefined) {
+        if (user !== null && user !== undefined) {
             setUser(user);
             navigate("/home");
         }
