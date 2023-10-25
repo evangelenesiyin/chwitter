@@ -14,6 +14,20 @@ export default function SidePanel({ setUser }) {
         navigate("/");
     }
 
+    const items = [
+        {
+            key: '1',
+            header: "Account",
+            content: (
+                <>
+                    <Link to="/edit-profile">Edit Profile</Link>
+                    <hr className="my-2" />
+                    <Link to="/" onClick={handleLogOut}>Logout</Link>
+                </>
+            ),
+        },
+    ];
+
     return (
         <div className="relative">
             <div className="grid grid-rows-2 gap-4 h-full ml-64 mt-6">
@@ -29,13 +43,11 @@ export default function SidePanel({ setUser }) {
                 </div>
                 <div className="w-5/6 h-12">
                     <Collapse accordion>
-                        <Panel header="Account" key="1" className="border border-white bg-white rounded-lg text-base font-bold">
-                        <Link to="/">Edit profile</Link>
-                        <hr className="my-2" />
-                        <Link to="/" onClick={handleLogOut}>
-                        Logout
-                        </Link>
-                        </Panel>
+                        {items.map((item) => (
+                            <Panel key={item.key} header={item.header} className="border border-white bg-white rounded-lg text-base font-bold">
+                                {item.content}
+                            </Panel>
+                        ))}
                     </Collapse>
                 </div>
             </div>
