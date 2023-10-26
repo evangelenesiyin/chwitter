@@ -3,6 +3,8 @@ import debug from "debug";
 import { addPostService, uploadToS3Service } from "../../utilities/chweet-service";
 import { CiImageOn } from 'react-icons/ci';
 import { RxCross2 } from 'react-icons/rx';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const log = debug("chwitter:src:components:ChweetForm");
 
@@ -68,13 +70,14 @@ export default function ChweetForm({ post, setPost }) {
         ...postData,
         images: imgURL,
       });
+      toast.success("Posted Chweet successfully.");
       setPost([...post, newPost]);
       resetPostForm();
     } catch (err) {
       if (err.message === "Unexpected end of JSON input") {
-        alert("Please try again later.");
+        toast.error("Please try again later.");
       } else {
-        alert("Try Again");
+        toast.error("Try Again.");
       }
       setStatus("error");
     } finally {
@@ -98,6 +101,8 @@ export default function ChweetForm({ post, setPost }) {
   };
 
   return (
+    <>
+    <ToastContainer />
     <div className="relative">
       <div
         className="grid grid-cols-2 grid-rows-2 gap-0 bg-white h-auto w-3/4 rounded-sm mt-6"
@@ -168,5 +173,6 @@ export default function ChweetForm({ post, setPost }) {
         </form>
       </div>
     </div>
+    </>
   );
 }
