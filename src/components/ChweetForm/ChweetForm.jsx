@@ -6,12 +6,12 @@ import { RxCross2 } from 'react-icons/rx';
 
 const log = debug("chwitter:src:components:ChweetForm");
 
-export default function ChweetForm() {
+export default function ChweetForm({ post, setPost }) {
   const textareaRef = useRef(null);
   const initialPostData = {
     postText: "",
   };
-  const [post, setPost] = useState([]);
+  
   const [postData, setPostData] = useState(initialPostData);
   const [imageFiles, setImageFiles] = useState({
     images: [],
