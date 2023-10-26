@@ -1,6 +1,9 @@
+import debug from "debug";
 import { PiDotsThreeBold } from "react-icons/pi";
 import { AiOutlineHeart, AiOutlineRetweet } from "react-icons/ai";
 import { Dropdown, Space } from 'antd';
+
+const log = debug("chwitter:src:components:ChweetRow");
 
 const items = [
   {
@@ -29,7 +32,7 @@ export default function ChweetRow({ post }) {
             className="grid grid-cols-2 grid-rows-3 gap-0 border border-gray-100 bg-white h-auto w-3/4 rounded-sm"
             style={{
             gridTemplateColumns: '15% 85%',
-            gridTemplateRows: '25% 55% 20%',
+            gridTemplateRows: '30px 90% 30px',
             }} >
                 <div className="bg-white col-span-1 row-span-3 h-auto">
                     <img
@@ -57,14 +60,14 @@ export default function ChweetRow({ post }) {
                     </span>
                 </div>
                 <div className="bg-white col-span-1 row-span-1 w-full pb-1 mt-1">
-                    <div className="mb-2">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                    <div className="my-2">
+                    {post.postText}
                     </div>
-                    <div style={{ position: 'relative' }}>
-                    <img src="./assets/placeholderimg.jpeg" className="w-1/5 h-1/5" />
+                    <div className="mb-2">
+                    <img src={post.imageURL} className="h-full w-3/4" />
                     </div>
                 </div>
-                <div className="flex bg-white col-span-1 row-span-1 h-auto w-full mb-4">
+                <div className="flex bg-white col-span-1 row-span-1 h-auto w-full items-center">
                     <span className="w-6 h-6 text-gray-400 cursor-pointer">
                         <AiOutlineHeart />
                     </span>
