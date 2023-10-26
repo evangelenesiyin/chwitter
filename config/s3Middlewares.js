@@ -1,6 +1,6 @@
 const AWS = require("aws-sdk");
 const multer = require("multer");
-const debug = require("debug")("nextfit:config:uploadToS3");
+const debug = require("debug")("chwitter:config:uploadToS3");
 const { v4: uuidv4 } = require("uuid");
 const Chweet = require("../models/chweetModel");
 
