@@ -8,6 +8,7 @@ const checkToken = require("./config/checkToken");
 
 //* Routers
 const usersRouter = require("./routes/usersRouter");
+const chweetRouter = require("./routes/chweetRouter");
 
 //* App
 const app = express();
@@ -21,6 +22,7 @@ app.use(checkToken);
 
 //* Routes -> all routes to start with /api
 app.use("/api/users", usersRouter);
+app.use("/api/chweet", chweetRouter);
 
 //* Listener
 const port = process.env.PORT || 3000;
