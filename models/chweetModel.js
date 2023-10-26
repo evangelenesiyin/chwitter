@@ -10,7 +10,7 @@ const chweetSchema = new Schema(
       maxLength: 250,
       message: "Post must be less than 250 characters",
     },
-    postPicture: {
+    imageURL: {
       type: String,
     },
     user: {
