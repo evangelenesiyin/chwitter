@@ -1,8 +1,4 @@
-import {
-  uploadToS3API,
-  addPostAPI,
-  getAllPostsAPI,
-} from "./chweet-api";
+import { uploadToS3API, addPostAPI, getAllPostsAPI } from "./chweet-api";
 
 export async function uploadToS3Service(imgFormData) {
   const data = await uploadToS3API(imgFormData);
@@ -12,8 +8,8 @@ export async function uploadToS3Service(imgFormData) {
   return imgURL;
 }
 
-export async function addPostService(apparelData) {
-  const postItem = await addPostAPI(apparelData);
+export async function addPostService(postData) {
+  const postItem = await addPostAPI(postData);
   return postItem.data.post;
 }
 
