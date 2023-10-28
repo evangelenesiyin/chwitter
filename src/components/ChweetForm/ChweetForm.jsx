@@ -1,17 +1,22 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import debug from "debug";
 import { addPostService, uploadToS3Service } from "../../utilities/chweet-service";
 import { CiImageOn } from 'react-icons/ci';
 import { RxCross2 } from 'react-icons/rx';
+import { Input, Select } from 'antd';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const log = debug("chwitter:src:components:ChweetForm");
 
 export default function ChweetForm({ post, setPost }) {
-  const textareaRef = useRef(null);
   const initialPostData = {
-    postText: "",
+    type: "",
+    breed: "",
+    gender: "",
+    sterilised: "",
+    contactDetails: "",
+    remarks: "",
   };
   
   const [postData, setPostData] = useState(initialPostData);
@@ -28,11 +33,18 @@ export default function ChweetForm({ post, setPost }) {
     setStatus(null);
   }
 
-  const handleChange = (e) => {
-    setPostData({
-      ...postData,
-      [e.target.name]: e.target.value,
-    });
+  const handleSelect = (name, value) => {
+  setPostData({
+    ...postData,
+    [name]: value,
+  });
+  };
+
+  const handleInput = (e) => {
+  setPostData({
+    ...postData,
+    [e.target.name]: e.target.value,
+  });
   };
 
   const handleImgFileInput = (e) => {
@@ -55,35 +67,40 @@ export default function ChweetForm({ post, setPost }) {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (imageFiles.images.length === 0) return;
-    setStatus("loading");
+  e.preventDefault();
+  setStatus("loading");
 
-    const imgFormData = new FormData();
-    imageFiles.images.forEach((img) => {
-      imgFormData.append("images", img);
-    });
-    log("images appended to form", imgFormData);
-    try {
-      const imgURL = await uploadToS3Service(imgFormData);
-      const newPost = await addPostService({
-        ...postData,
-        images: imgURL,
+  try {
+    let imgURL = null;
+
+    if (imageFiles.images.length > 0) {
+      const imgFormData = new FormData();
+      imageFiles.images.forEach((img) => {
+        imgFormData.append("images", img);
       });
-      toast.success("Posted Chweet successfully.");
-      setPost([...post, newPost]);
-      resetPostForm();
-    } catch (err) {
-      if (err.message === "Unexpected end of JSON input") {
-        toast.error("Please try again later.");
-      } else {
-        toast.error("Try Again.");
-      }
-      setStatus("error");
-    } finally {
-      setStatus("success");
+
+      imgURL = await uploadToS3Service(imgFormData);
     }
-  };
+
+    const newPost = await addPostService({
+      ...postData,
+      images: imgURL,
+    });
+
+    toast.success("Posted Chweet successfully.");
+    setPost([...post, newPost]);
+    resetPostForm();
+  } catch (err) {
+    if (err.message === "Unexpected end of JSON input") {
+      toast.error("Please try again later.");
+    } else {
+      toast.error("Try Again.");
+    }
+    setStatus("error");
+  } finally {
+    setStatus("success");
+  }
+};
 
   const handleRemoveImage = () => {
     setImageFiles({
@@ -91,13 +108,6 @@ export default function ChweetForm({ post, setPost }) {
       preview: [],
       filenames: [],
     });
-  };
-
-  const autoAdjustTextarea = () => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
-    }
   };
 
   return (
@@ -121,18 +131,148 @@ export default function ChweetForm({ post, setPost }) {
         onSubmit={handleSubmit}
         autoComplete="off"
         encType="multipart/form-data">
-            <div className="bg-white col-span-1 row-span-1 w-full">
-              <textarea
-                type="text"
-                id="postText"
-                name="postText"
-                value={postData.postText}
-                onChange={handleChange}
-                placeholder="What is happening?"
-                ref={textareaRef}
-                onInput={autoAdjustTextarea}
-                className="focus:outline-none focus:border-transparent my-6 mb-2 w-11/12 placeholder-top"
+          <p className="my-4 mr-4 font-light text-sm">To start a post, <span className='font-semibold'>fill in the following fields</span> and <span className='font-semibold'>upload a picture</span> of the pet you wish to put up for adoption.</p>
+            <div className="bg-white col-span-1 row-span-1 w-11/12 mt-4">
+              <div className="grid grid-cols-4 grid-rows-3 gap-y-2 mb-4"
+                  style={{
+                  gridTemplateColumns: '13% 38% 13% 38%',
+                }}
+                >
+                <div className="col-span-1 row-span-1">
+              <label htmlFor="type" className="font-light align-middle text-sm">Type<span className="subscript text-red-500">*</span></label>
+              </div>
+              <div className="col-span-1 row-span-1">
+                <Select
+                id="type"
+                name="type"
+                value={postData.type}
+                onChange={value => handleSelect("type", value)}
+                required
+                className='w-11/12'
+                options={[
+                  {
+                    value: 'Cat',
+                    label: 'Cat',
+                  },
+                  {
+                    value: 'Dog',
+                    label: 'Dog',
+                  },
+                  {
+                    value: 'Rabbit',
+                    label: 'Rabbit',
+                  },
+                  {
+                    value: 'Bird',
+                    label: 'Bird',
+                  },
+                  {
+                    value: 'Hamster',
+                    label: 'Hamster',
+                  },
+                  {
+                    value: 'Others',
+                    label: 'Others',
+                  },
+                ]}
               />
+              </div>
+              <div className="col-span-1 row-span-1">
+              <label htmlFor="breed" className="font-light align-middle text-sm">Breed<span className="subscript text-red-500">*</span></label>
+              </div>
+              <div className="col-span-1 row-span-1">
+              <Input
+              type="text"
+              id="breed"
+              name="breed"
+              value={postData.breed}
+              onChange={handleInput}
+              required
+              className="w-11/12 mx-2"
+              />
+              </div>
+              <div className="col-span-1 row-span-1">
+              <label htmlFor="gender" className="font-light align-middle text-sm">Gender<span className="subscript text-red-500">*</span></label>
+              </div>
+              <div className="col-span-1 row-span-1">
+              <Select
+              id="gender"
+              name="gender"
+              value={postData.gender}
+              onChange={value => handleSelect("gender", value)}
+              required
+                className='w-11/12'
+                options={[
+                  {
+                    value: 'Male',
+                    label: 'Male',
+                  },
+                  {
+                    value: 'Female',
+                    label: 'Female',
+                  },
+                  {
+                    value: 'Not sure',
+                    label: 'Not sure',
+                  },
+                ]}
+              />
+              </div>
+              <div className="col-span-1 row-span-1">
+              <label htmlFor="sterilised" className="font-light align-middle text-sm">Sterilised<span className="subscript text-red-500">*</span></label>
+              </div>
+              <div className="col-span-1 row-span-1">
+              <Select
+              id="sterilised"
+              name="sterilised"
+              value={postData.sterilised}
+              onChange={value => handleSelect("sterilised", value)}
+              required
+                className='w-11/12 mx-2'
+                options={[
+                  {
+                    value: 'Yes',
+                    label: 'Yes',
+                  },
+                  {
+                    value: 'No',
+                    label: 'No',
+                  },
+                  {
+                    value: 'Not sure',
+                    label: 'Not sure',
+                  },
+                ]}
+              />
+
+              </div>
+              <div className="col-span-1 row-span-1">
+              <label htmlFor="contactDetails" className="font-light align-middle text-sm">Contact<span className="subscript text-red-500">*</span></label>
+              </div>
+              <div className="col-span-1 row-span-1">
+              <Input
+              id="contactDetails"
+              name="contactDetails"
+              value={postData.contactDetails}
+              onChange={handleInput}
+              required
+              className="w-11/12"
+              />
+              </div>
+              <div className="col-span-1 row-span-1">
+                <label htmlFor="remarks" className="font-light align-middle text-sm">Remarks</label>
+              </div>
+              <div className="col-span-1 row-span-1">
+              <Input
+                type="text"
+                id="remarks"
+                name="remarks"
+                value={postData.remarks}
+                onChange={handleInput}
+                className="w-11/12 mx-2"
+              />
+              </div>
+              </div>
               <div style={{ position: 'relative' }}>
                 {imageFiles.preview.length !== 0 ? (
                 imageFiles.preview.map((img, idx) => (
@@ -140,7 +280,7 @@ export default function ChweetForm({ post, setPost }) {
                     key={idx}
                     src={img}
                     alt="Preview image"
-                    className="w-4/5 h-1/2"
+                    className="w-3/5 h-full"
                   />
                 ))
               ) : null}
@@ -160,7 +300,7 @@ export default function ChweetForm({ post, setPost }) {
                 id="image"
                 accept="image/*"
                 onChange={handleImgFileInput}
-                style={{ display: 'none' }} // Hide the input element
+                style={{ display: 'none' }}
               />
               <label htmlFor="image">
                 <CiImageOn className="text-coral w-6 h-6 mb-4 cursor-pointer" />
