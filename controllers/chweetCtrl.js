@@ -18,8 +18,8 @@ function uploadImg(req, res) {
 
 async function createPost(req, res) {
   debug("req.body: %o", req.body);
-  const { postText } = req.body;
-  const postInfo = { postText };
+  const { type, breed, gender, sterilised, contactDetails, remarks } = req.body;
+  const postInfo = { type, breed, gender, sterilised, contactDetails, remarks };
   try {
     const newPost = await Chweet.create({
       ...postInfo,
