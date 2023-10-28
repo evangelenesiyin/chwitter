@@ -30,7 +30,7 @@ export default function SidePanel({ setUser }) {
 
     return (
         <div className="relative">
-            <div className="grid grid-rows-2 gap-4 h-full ml-64 mt-6">
+            <div className="grid grid-rows-2 gap-4 h-auto ml-64 mt-6">
                 <div className="bg-white w-5/6 rounded-sm">
                     <img src="./assets/placeholderimg.jpeg" alt="header-image" className="h-44 w-full object-cover rounded-t-sm" />
                     <img src="./assets/placeholder2.jpeg" alt="profile-image" className="w-1/3 rounded-full mx-auto -mt-12" />
@@ -38,7 +38,7 @@ export default function SidePanel({ setUser }) {
                         <p className="font-bold text-xl">catlover123</p>
                         <p className="text-gray-400 mb-2">@user123</p>
                         <p className="text-gray-400">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam dolor velit, maximus vitae consectetur eu, viverra eu ipsum.</p>
-                        <p className="mt-4 font-bold text-base">View full profile</p>
+                        <p className="my-4 font-bold text-base">View full profile</p>
                     </div>
                 </div>
                 <div className="w-5/6 h-12">
