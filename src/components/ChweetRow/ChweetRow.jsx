@@ -60,11 +60,16 @@ export default function ChweetRow({ post }) {
                     </span>
                 </div>
                 <div className="bg-white col-span-1 row-span-1 w-full pb-1 mt-1">
-                    <div className="my-2">
-                    {post.postText}
+                    <div className="my-2 font-light text-sm">
+                    <div><span className="font-medium">Type:</span>{' '}{post.type}</div>
+                    <div><span className="font-semibold">Breed:</span>{' '}{post.breed}</div>
+                    <div><span className="font-semibold">Gender:</span>{' '}{post.gender}</div>
+                    <div><span className="font-semibold">Sterilised:</span>{' '}{post.sterilised}</div>
+                    <div><span className="font-semibold">Contact:</span>{' '}{post.contactDetails}</div>
+                    <div><span className="font-semibold">Remarks:</span>{' '}{post.remarks}</div>
                     </div>
                     <div className="mb-2">
-                    <img src={post.imageURL} className="h-full w-3/4" />
+                    <img src={post.imageURL} className="h-full w-3/5" />
                     </div>
                 </div>
                 <div className="flex bg-white col-span-1 row-span-1 h-auto w-full items-center">
