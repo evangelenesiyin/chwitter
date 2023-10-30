@@ -55,4 +55,18 @@ async function getAllPosts(req, res) {
   }
 }
 
-module.exports = { uploadImg, createPost, getAllPosts };
+async function del(req, res) {
+  debug("see req.params: %o", req.params);
+  try {
+    const post = await Chweet.findOneAndDelete({
+      _id: req.params.postID,
+      user: req.user._id,
+    });
+    debug("delete post by user: %o", post);
+    sendResponse(res, 200);
+  } catch (err) {
+    sendResponse(res, 500, null, "Error deleting post");
+  }
+}
+
+module.exports = { uploadImg, createPost, getAllPosts, del };
