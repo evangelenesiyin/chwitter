@@ -3,6 +3,7 @@ import {
   addPostAPI,
   getAllPostsAPI,
   deletePostAPI,
+  updatePostAPI,
 } from "./chweet-api";
 
 export async function uploadToS3Service(imgFormData) {
@@ -20,9 +21,18 @@ export async function addPostService(postData) {
 
 export async function getAllPostsService() {
   const allPosts = await getAllPostsAPI();
-  return allPosts.data.post;
+  const sortedPosts = allPosts.data.post.sort((a, b) => {
+    return new Date(b.createdAt) - new Date(a.createdAt);
+  });
+
+  return sortedPosts;
 }
 
 export async function deletePostService(postID) {
   await deletePostAPI(postID);
+}
+
+export async function updatePostService(postID, postData) {
+  const result = await updatePostAPI(postID, postData);
+  return result.data.post;
 }
