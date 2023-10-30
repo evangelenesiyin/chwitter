@@ -1,25 +1,20 @@
 const Profile = require("../models/profileModel");
 const debug = require("debug")("chwitter:controllers:profileCtrl");
 const sendResponse = require("../config/sendResponseHelper");
+const User = require("../models/userModel");
 
 const AWS_S3_OBJECT_URL = process.env.AWS_S3_OBJECT_URL;
 
-async function uploadImg(req, res) {
-  try {
-    debug("Files received: %o", req.files);
-    const { files } = req;
-    const imgURLs = files.map((file) => {
-      return `${AWS_S3_OBJECT_URL}/${file.processedImage.key}`;
-    });
-    debug("Images converted to URLs: %o", imgURLs);
-    res.status(201).json({
-      message: "Image successfully uploaded to S3",
-      imageURLs: imgURLs,
-    });
-  } catch (err) {
-    debug("Error uploading images: %o", err);
-    sendResponse(res, 500, null, "Error uploading images");
-  }
+function uploadImg(req, res) {
+  debug("files received: %o", req.files);
+  const { files } = req;
+  const imgURLs = files.map((file) => {
+    return `${AWS_S3_OBJECT_URL}/${file.processedImage.key}`;
+  });
+  debug("image converted to url:", imgURLs);
+  res
+    .status(201)
+    .json({ message: "Image successfully uploaded to S3", imageURLs: imgURLs });
 }
 
 async function createProfile(req, res) {
@@ -29,10 +24,12 @@ async function createProfile(req, res) {
     const profileInfo = { displayName, username, bio, location, website };
     const newProfile = await Profile.create({
       ...profileInfo,
-      headerPicture: req.body.headerPicture,
       profilePicture: req.body.profilePicture,
       user: req.user._id,
     });
+    const user = await User.findById(req.user._id);
+    user.profile = newProfile._id;
+    await user.save();
     sendResponse(res, 201, { profile: newProfile });
   } catch (err) {
     debug("Error creating profile: %o", err);
@@ -50,4 +47,15 @@ async function createProfile(req, res) {
   }
 }
 
-module.exports = { uploadImg, createProfile };
+async function getOneProfile(req, res) {
+  debug("see req.user: %o", req.user);
+  try {
+    const user = await User.findById(req.user._id).populate("profile").exec();
+    debug("found user profile: %o", user.profile);
+    sendResponse(res, 200, { user });
+  } catch (err) {
+    sendResponse(res, 500, null, "Error fetching profile");
+  }
+}
+
+module.exports = { uploadImg, createProfile, getOneProfile };
