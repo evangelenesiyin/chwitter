@@ -7,12 +7,12 @@ import LoginForm from "../../components/LoginForm/LoginForm";
 import SignUpForm from "../../components/SignUpForm/SignUpForm";
 import NavBar from "../../components/NavBar/NavBar";
 import HomePage from '../HomePage/HomePage';
-import HomePageHero from "../HomePage/HomePageHero";
 import ErrorPage from '../ErrorPage/ErrorPage';
 import ProfilePage from '../ProfilePage/ProfilePage';
 import EditProfile from "../../components/EditProfile/EditProfile"
 import { getUser } from "../../utilities/users-service";
 import { getAllPostsService } from "../../utilities/chweet-service";
+import { getProfileInfoService } from "../../utilities/profile-service";
 
 const log = debug("chwitter:src:App");
 localStorage.debug = "chwitter:*";
@@ -21,7 +21,7 @@ log("Start React");
 
 function App() {
   const [user, setUser] = useState(getUser());
-  const [profileInfo, setProfileInfo] = useState([]);
+  const [profileInfo, setProfileInfo] = useState({});
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState([]);
@@ -33,7 +33,18 @@ function App() {
       const allPosts = await getAllPostsService();
       setPost(allPosts);
     } catch (err) {
-      console.error(err);
+      log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchProfileData = async () => {
+    try {
+      const profileInfo = await getProfileInfoService();
+      setProfileInfo(profileInfo);
+    } catch (err) {
+      log(err);
     } finally {
       setLoading(false);
     }
@@ -42,6 +53,7 @@ function App() {
   useEffect(() => {
     if (user) {
       fetchPostData();
+      fetchProfileData();
       if (location.pathname === "/") {
       navigate("/home");
     }
@@ -49,49 +61,42 @@ function App() {
 }, [user, navigate, location]);
 
   return (
-    <>
+  <>
     <NavBar />
-    { user ? (
-        profileInfo.length === 0 ? (
-          <Routes>
-            <Route path="/home" element={<HomePageHero setUser={setUser} setProfileInfo={setProfileInfo} />} />
-          </Routes>
-        ) : (
-          <Routes>
-            <Route path="/home" element={<HomePage setUser={setUser} post={post} setPost={setPost} />} />
-            <Route path="/:username" element={<ProfilePage />} />
-            <Route path="/edit-profile" element={<EditProfile />} />
-            <Route path="/*" element={<ErrorPage />} />
-          </Routes>
-        )
-      ) : (
-      <>
-    <main className="min-h-screen min-w-screen bg-beige p-0 m-0 grid grid-cols-3">
-      <div className="col-span-1 items-center justify-center h-screen flex">
-        <div className="text-title text-white text-right font-extrabold  break-words leading-tight mb-28">
-        <span>EXPRESS</span> <span>YOURSELF</span> <span>WITH</span> <span className="text-black">CHWITTER</span>
-        </div>
-      </div>
+    {user ? (
+        <Routes>
+          <Route path="/home" element={<HomePage setUser={setUser} post={post} setPost={setPost} profileInfo={profileInfo} setProfileInfo={setProfileInfo} />} />
+          <Route path="/:username" element={<ProfilePage />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/*" element={<ErrorPage />} />
+        </Routes>
+    ) : (
+      <main className="min-h-screen min-w-screen bg-beige p-0 m-0 grid grid-cols-3">
         <div className="col-span-1 items-center justify-center h-screen flex">
-        <img src="./assets/landingphoto.png" alt="Image" className="mx-auto mt-22 w-3/4" />
+          <div className="text-title text-white text-right font-extrabold break-words leading-tight mb-28">
+            <span>EXPRESS</span> <span>YOURSELF</span> <span>WITH</span> <span className="text-black">CHWITTER</span>
+          </div>
         </div>
-      <Tabs>
-        <TabList>
-          <Tab>Sign Up</Tab>
-          <Tab>Login</Tab>
-        </TabList>
-        <TabPanel>
-        <SignUpForm setUser={setUser} status={status} setStatus={setStatus} />
-        </TabPanel>
-        <TabPanel>
-        <LoginForm setUser={setUser} status={status} setStatus={setStatus} />
-        </TabPanel>
-      </Tabs>
-    </main>
-    </>
+        <div className="col-span-1 items-center justify-center h-screen flex">
+          <img src="./assets/landingphoto.png" alt="Image" className="mx-auto mt-22 w-3/4" />
+        </div>
+        <Tabs>
+          <TabList>
+            <Tab>Sign Up</Tab>
+            <Tab>Login</Tab>
+          </TabList>
+          <TabPanel>
+            <SignUpForm setUser={setUser} status={status} setStatus={setStatus} />
+          </TabPanel>
+          <TabPanel>
+            <LoginForm setUser={setUser} status={status} setStatus={setStatus} />
+          </TabPanel>
+        </Tabs>
+      </main>
     )}
-    </>
-  )
+  </>
+);
+
 }
 
 export default App;
