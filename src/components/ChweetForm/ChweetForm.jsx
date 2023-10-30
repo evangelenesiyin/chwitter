@@ -87,8 +87,9 @@ export default function ChweetForm({ post, setPost, profileInfo }) {
       images: imgURL,
     });
 
+    setPost([newPost, ...post]);
+
     toast.success("Posted Chweet successfully.");
-    setPost([...post, newPost]);
     resetPostForm();
   } catch (err) {
     if (err.message === "Unexpected end of JSON input") {
@@ -305,7 +306,7 @@ export default function ChweetForm({ post, setPost, profileInfo }) {
               <label htmlFor="image">
                 <CiImageOn className="text-coral w-6 h-6 mb-4 cursor-pointer" />
               </label>        
-                <button className="border border-coral bg-coral text-white py-1 px-4 ml-4 mr-4 mb-4">
+                <button className="border border-coral bg-coral text-white py-1 px-4 ml-4 mr-4 mb-4 rounded-sm">
                   Post
                 </button>
               </span>
