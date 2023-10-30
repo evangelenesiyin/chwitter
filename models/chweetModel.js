@@ -47,7 +47,7 @@ const chweetSchema = new Schema(
   }
 );
 
-chweetSchema.virtual("s3ObjecID").get(function () {
+chweetSchema.virtual("s3ObjectID").get(function () {
   const deconstructedURL = this.imageURL.split("/");
   const s3ObjectID = deconstructedURL[deconstructedURL.length - 1];
   return s3ObjectID;
