@@ -1,11 +1,16 @@
 import debug from "debug";
+import { deletePostService } from "../../utilities/chweet-service";
 import { PiDotsThreeBold } from "react-icons/pi";
 import { AiOutlineHeart, AiOutlineRetweet } from "react-icons/ai";
 import { Dropdown, Space } from 'antd';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const log = debug("chwitter:src:components:ChweetRow");
 
-const items = [
+export default function ChweetRow({ post, profileInfo, fetchPostData }) {
+
+  const items = [
   {
     label: (
       <a target="_blank" rel="noopener noreferrer" href="/">
@@ -16,7 +21,15 @@ const items = [
   },
   {
     label: (
-      <a target="_blank" rel="noopener noreferrer" href="/">
+      <a
+      target="_blank"
+      rel="noopener noreferrer"
+      href="/"
+      onClick={(e) => {
+        e.preventDefault();
+        handleDelete(post._id);
+      }}
+      >
         Delete
       </a>
     ),
@@ -24,9 +37,21 @@ const items = [
   },
 ];
 
-export default function ChweetRow({ post }) {
+const handleDelete = async (postID) => {
+    log("Deleting post with ID:", postID);
+      try {
+        await deletePostService(postID);
+        await fetchPostData();
+         toast.success("Deleted Chweet successfully.");
+      } catch (err) {
+          log("Error deleting post:", err);
+         toast.error("Unable to delete Chweet.");
+      }
+  };
+
     return (
         <>
+        <ToastContainer />
         <div className="relative">
             <div
             className="grid grid-cols-2 grid-rows-3 gap-0 border border-gray-100 bg-white h-auto w-3/4 rounded-sm"
@@ -36,13 +61,13 @@ export default function ChweetRow({ post }) {
             }} >
                 <div className="bg-white col-span-1 row-span-3 h-auto">
                     <img
-                    src="./assets/placeholder2.jpeg"
+                    src={profileInfo.profilePicture}
                     className="rounded-full h-16 mx-auto mt-2"
                     />
                 </div>
                 <div className="flex bg-white col-span-1 row-span-1 w-full my-2">
-                    <span className="font-bold">catlover123</span>&nbsp;
-                    <span className="text-gray-400">@user123</span>&nbsp;
+                    <span className="font-bold">{profileInfo.displayName}</span>&nbsp;
+                    <span className="text-gray-400">{"@"}{profileInfo.username}</span>&nbsp;
                     <span className="text-gray-400">·</span>&nbsp;
                     <span className="text-gray-400">1h</span>
                     <span className="ml-auto pr-4 text-gray-500 cursor-pointer">
