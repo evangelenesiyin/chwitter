@@ -9,3 +9,7 @@ export function uploadToS3API(imgFormData) {
 export function addProfileAPI(profileData) {
   return sendRequest(`${BASE_URL}/new`, "POST", profileData);
 }
+
+export function getProfileInfoAPI() {
+  return sendRequest(BASE_URL);
+}
