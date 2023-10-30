@@ -36,6 +36,10 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    profile: {
+      type: Schema.Types.ObjectId,
+      ref: "Profile",
+    },
   },
   {
     timestamps: true,
