@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const log = debug("chwitter:src:components:ChweetForm");
 
-export default function ChweetForm({ post, setPost }) {
+export default function ChweetForm({ post, setPost, profileInfo }) {
   const initialPostData = {
     type: "",
     breed: "",
@@ -123,7 +123,7 @@ export default function ChweetForm({ post, setPost }) {
       >
         <div className="bg-white col-span-1 row-span-2 h-auto">
           <img
-            src="./assets/placeholder2.jpeg"
+            src={profileInfo.profilePicture}
             className="rounded-full h-16 mx-auto mt-2"
           />
         </div>
