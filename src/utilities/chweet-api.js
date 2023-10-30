@@ -13,3 +13,7 @@ export function addPostAPI(postData) {
 export function getAllPostsAPI() {
   return sendRequest(BASE_URL);
 }
+
+export function deletePostAPI(postID) {
+  return sendRequest(`${BASE_URL}/${postID}`, "DELETE");
+}
