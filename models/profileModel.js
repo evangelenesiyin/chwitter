@@ -34,13 +34,8 @@ const profileSchema = new Schema(
       trim: true,
       maxLength: 30,
     },
-    headerPicture: {
-      type: String,
-      required: true,
-    },
     profilePicture: {
       type: String,
-      required: true,
     },
     user: {
       type: Schema.Types.ObjectId,
@@ -52,12 +47,6 @@ const profileSchema = new Schema(
     toJSON: { virtuals: true },
   }
 );
-
-profileSchema.virtual("headerPictureS3ObjectID").get(function () {
-  const deconstructedURL = this.headerPicture.split("/");
-  const s3ObjectID = deconstructedURL[deconstructedURL.length - 1];
-  return s3ObjectID;
-});
 
 profileSchema.virtual("profilePictureS3ObjectID").get(function () {
   const deconstructedURL = this.profilePicture.split("/");
