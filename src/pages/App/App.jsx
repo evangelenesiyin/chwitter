@@ -65,7 +65,7 @@ function App() {
     <NavBar />
     {user ? (
         <Routes>
-          <Route path="/home" element={<HomePage setUser={setUser} post={post} setPost={setPost} profileInfo={profileInfo} setProfileInfo={setProfileInfo} />} />
+          <Route path="/home" element={<HomePage setUser={setUser} post={post} setPost={setPost} profileInfo={profileInfo} setProfileInfo={setProfileInfo} fetchPostData={fetchPostData} />} />
           <Route path="/:username" element={<ProfilePage />} />
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/*" element={<ErrorPage />} />
