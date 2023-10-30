@@ -1,19 +1,5 @@
-import { uploadToS3API, addProfileAPI } from "./profile-api";
-
-export async function uploadImagesAndAddProfileService(
-  headerImageFormData,
-  profileImageFormData,
-  profileData
-) {
-  const headerImageURL = await uploadToS3Service(headerImageFormData);
-  const profileImageURL = await uploadToS3Service(profileImageFormData);
-
-  profileData.headerPicture = headerImageURL;
-  profileData.profilePicture = profileImageURL;
-
-  const profileItem = await addProfileService(profileData);
-  return profileItem.data.profile;
-}
+import { uploadToS3API, addProfileAPI, getProfileInfoAPI } from "./profile-api";
+import debug from "debug";
 
 export async function uploadToS3Service(imgFormData) {
   const data = await uploadToS3API(imgFormData);
@@ -23,5 +9,11 @@ export async function uploadToS3Service(imgFormData) {
 
 export async function addProfileService(profileData) {
   const profileItem = await addProfileAPI(profileData);
-  return profileItem.data.profile;
+  return profileItem;
+}
+
+export async function getProfileInfoService() {
+  const profileInfo = await getProfileInfoAPI();
+  debug("getProfileInfoService", profileInfo.data.user.profile);
+  return profileInfo.data.user.profile;
 }
