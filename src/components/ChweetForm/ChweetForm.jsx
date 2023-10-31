@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const log = debug("chwitter:src:components:ChweetForm");
 
-export default function ChweetForm({ post, setPost, profileInfo }) {
+export default function ChweetForm({ allPosts, setAllPosts, profileInfo, fetchAllPosts }) {
   const initialPostData = {
     type: "",
     breed: "",
@@ -87,10 +87,10 @@ export default function ChweetForm({ post, setPost, profileInfo }) {
       images: imgURL,
     });
 
-    setPost([newPost, ...post]);
-
+    setAllPosts([newPost, ...allPosts]);
     toast.success("Posted Chweet successfully.");
     resetPostForm();
+    fetchAllPosts();
   } catch (err) {
     if (err.message === "Unexpected end of JSON input") {
       toast.error("Please try again later.");
