@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUpService } from "../../utilities/users-service";
+import { GoInfo } from "react-icons/go";
+import { Tooltip } from 'antd';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function SignUpForm({ setUser, status, setStatus }) {
     const [userData, setUserData] = useState({
@@ -13,11 +17,30 @@ export default function SignUpForm({ setUser, status, setStatus }) {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
+  const { name, value } = e.target;
+
+  if (name === 'username') {
+    const isUsernameValid = /^[a-z0-9]+$/.test(value);
     setUserData({
       ...userData,
-      [e.target.name]: e.target.value,
+      [name]: value,
+      valid: isUsernameValid && isFormValid(),
     });
-  };
+  } else if (name === 'email') {
+    const isEmailValid = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(value);
+    setUserData({
+      ...userData,
+      [name]: value,
+      valid: isEmailValid && isFormValid(),
+    });
+  } else {
+    setUserData({
+      ...userData,
+      [name]: value,
+      valid: isFormValid(),
+    });
+  }
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,24 +48,41 @@ export default function SignUpForm({ setUser, status, setStatus }) {
         const user = await signUpService(userData);
         if (user !== null && user !== undefined) {
             setUser(user);
-            navigate("/home");
+            navigate("/start");
         }
     } catch (err) {
         setStatus("error");
+        toast.error("Unable to create an account. Please reload the page and try again.")
     } finally {
         setStatus(null);
     }
   }
 
   const isFormValid = () => {
-    return userData.username && userData.email && userData.password && userData.repeat && userData.password === userData.repeat && status !== "error";
-  };
+  return (
+    userData.username &&
+    /^[a-z0-9]+$/.test(userData.username) &&
+    userData.email &&
+    /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(userData.email) &&
+    userData.password &&
+    userData.repeat &&
+    userData.password === userData.repeat &&
+    status !== 'error'
+  );
+};
 
     return(
         <div className="col-span-1 -ml-16">
             <form className="bg-darkred shadow-xl rounded-b-lg rounded-tr-lg px-8 py-8 mx-8" onSubmit={handleSubmit} autoComplete="off">
                 <div className="pt-6">
-                    <label htmlFor="username" className="text-white text-lg mx-8">Username</label>
+                    <div className="flex items-center">
+                    <label htmlFor="username" className="text-white text-lg ml-8">Username</label>
+                    <span className="ml-1 text-white">
+                        <Tooltip title="Please fill this field carefully. Your login username will also be used as your profile username.">
+                        <GoInfo />
+                        </Tooltip>
+                        </span>
+                    </div>
                 </div>
                     <input
                     type="username"
@@ -61,7 +101,7 @@ export default function SignUpForm({ setUser, status, setStatus }) {
                     }}
                     ></input>
                     {userData.username !== "" && (userData.username.length < 2 || userData.username.length > 15) && (
-                    <div className="text-red-300 text-sm mx-8 -mb-2">Username must be between 2 to 15 characters</div>
+                    <div className="text-red-300 text-sm mx-8 -mb-2">Username must be between 3 to 20 characters. Letters and numbers only.</div>
                     )}
                 <div className="pt-6">
                     <label htmlFor="email" className="text-white text-lg mx-8">Email Address</label>
@@ -80,7 +120,7 @@ export default function SignUpForm({ setUser, status, setStatus }) {
                         userData.email !== "" && !userData.email.includes("@") ? "2px solid red" : ""
                     }}
                     ></input>
-                    {(userData.email !== "" && !userData.email.includes("@")) && (<div className="text-red-300 text-sm mx-8 -mb-2">Email address must contain '@'</div>)}
+                    {(userData.email !== "" && !userData.email.includes("@")) && (<div className="text-red-300 text-sm mx-8 -mb-2">example@yourdomain.com</div>)}
                 <div className="pt-6">
                     <label htmlFor="password" className="text-white text-lg mx-8">Password</label>
                 </div>
