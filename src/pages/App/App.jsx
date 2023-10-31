@@ -2,7 +2,6 @@ import debug from "debug";
 import { useState, useEffect } from "react";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import './App.css';
 import LoginForm from "../../components/LoginForm/LoginForm";
 import SignUpForm from "../../components/SignUpForm/SignUpForm";
 import NavBar from "../../components/NavBar/NavBar";
@@ -13,6 +12,7 @@ import EditProfile from "../../components/EditProfile/EditProfile"
 import { getUser } from "../../utilities/users-service";
 import { getAllPostsService } from "../../utilities/chweet-service";
 import { getProfileInfoService } from "../../utilities/profile-service";
+import './App.css';
 
 const log = debug("chwitter:src:App");
 localStorage.debug = "chwitter:*";
@@ -24,20 +24,14 @@ function App() {
   const [profileInfo, setProfileInfo] = useState({});
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [post, setPost] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const fetchPostData = async () => {
-    try {
-      const allPosts = await getAllPostsService();
-      setPost(allPosts);
-    } catch (err) {
-      log(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const fetchAllPosts = async () => {
+    const all = await getAllPostsService();
+      setAllPosts(all);
+  }
 
   const fetchProfileData = async () => {
     try {
@@ -52,7 +46,7 @@ function App() {
 
   useEffect(() => {
     if (user) {
-      fetchPostData();
+      fetchAllPosts();
       fetchProfileData();
       if (location.pathname === "/") {
       navigate("/home");
@@ -65,7 +59,7 @@ function App() {
     <NavBar />
     {user ? (
         <Routes>
-          <Route path="/home" element={<HomePage setUser={setUser} post={post} setPost={setPost} profileInfo={profileInfo} setProfileInfo={setProfileInfo} fetchPostData={fetchPostData} />} />
+          <Route path="/home" element={<HomePage setUser={setUser} allPosts={allPosts} setAllPosts={setAllPosts} profileInfo={profileInfo} setProfileInfo={setProfileInfo} fetchAllPosts={fetchAllPosts} />} />
           <Route path="/:username" element={<ProfilePage />} />
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/*" element={<ErrorPage />} />
