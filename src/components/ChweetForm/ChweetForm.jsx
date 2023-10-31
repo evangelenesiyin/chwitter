@@ -125,7 +125,7 @@ export default function ChweetForm({ allPosts, setAllPosts, profileInfo, fetchAl
         <div className="bg-white col-span-1 row-span-2 h-auto">
           <img
             src={profileInfo.profilePicture}
-            className="rounded-full h-16 mx-auto mt-2"
+            className="rounded-full w-16 h-16 mx-auto mt-6 object-cover"
           />
         </div>
         <form
