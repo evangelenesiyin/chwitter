@@ -45,10 +45,12 @@ async function createPost(req, res) {
 }
 
 async function getAllPosts(req, res) {
-  debug("see req.user: %o", req.user);
   try {
-    const post = await Chweet.find({ user: req.user._id });
-    debug("found posts by user: %o", post);
+    const post = await Chweet.find().populate({
+      path: "user",
+      populate: { path: "profile" },
+    });
+    debug("found all posts: %o", post);
     sendResponse(res, 200, { post });
   } catch (err) {
     sendResponse(res, 500, null, "Error fetching all posts");
@@ -69,4 +71,44 @@ async function del(req, res) {
   }
 }
 
-module.exports = { uploadImg, createPost, getAllPosts, del };
+async function updateOne(req, res) {
+  debug("see req.user: %o", req.user);
+  try {
+    const updateObject = {
+      type: req.body.type,
+      breed: req.body.breed,
+      gender: req.body.gender,
+      sterilised: req.body.sterilised,
+      contactDetails: req.body.contactDetails,
+      remarks: req.body.remarks,
+    };
+
+    const id = req.params.postID;
+
+    const updatedPost = await Chweet.findByIdAndUpdate(id, updateObject, {
+      new: true,
+    });
+    debug("found post by user: %o", updatedPost);
+    sendResponse(res, 200, { post: updatedPost });
+  } catch (err) {
+    debug("Error saving: %o", err);
+    if (err.name === "ValidationError") {
+      const errors = {};
+      debug("Error saving errors:", err.errors);
+      for (const field in err.errors) {
+        errors[field] = err.errors[field].message;
+      }
+      const errorMessage = Object.keys(errors)[0];
+      return sendResponse(res, 400, null, errors[errorMessage]);
+    }
+    sendResponse(res, 500, null, "Error editing post");
+  }
+}
+
+module.exports = {
+  uploadImg,
+  createPost,
+  getAllPosts,
+  del,
+  updateOne,
+};
