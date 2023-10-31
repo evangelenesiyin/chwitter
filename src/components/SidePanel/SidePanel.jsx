@@ -31,9 +31,9 @@ export default function SidePanel({ setUser, profileInfo }) {
     return (
         <div className="relative">
             <div className="grid grid-rows-2 gap-4 h-auto w-full mt-6">
-                <div className="bg-white w-1/2 rounded-sm ml-80">
+                <div className="bg-white w-1/2 rounded-sm ml-64 sm:ml-64 md:ml-64 lg:ml-64 xl:ml-64 2xl:ml-80">
                     <div className="h-20 bg-coral"></div>
-                    <img src={profileInfo.profilePicture} alt="profile-image" className="w-1/3 rounded-full mx-auto -mt-12" />
+                    <img src={profileInfo.profilePicture} alt="profile-image" className="w-28 h-28 rounded-full mx-auto -mt-12 object-cover" />
                     <div className="text-center px-4 py-2">
                         <p className="font-bold text-xl">{profileInfo.displayName}</p>
                         <p className="text-gray-400 mb-2">{"@"}{profileInfo.username}</p>
@@ -41,10 +41,10 @@ export default function SidePanel({ setUser, profileInfo }) {
                         <p className="mt-6 mb-2 font-bold text-base text-coral">View full profile</p>
                     </div>
                 </div>
-                <div className="w-1/2 h-12 ml-80">
+                <div className="w-1/2 h-12 ml-64 sm:ml-64 md:ml-64 lg:ml-64 xl:ml-64 2xl:ml-80">
                     <Collapse accordion>
                         {items.map((item) => (
-                            <Panel key={item.key} header={item.header} className="border border-white bg-white rounded-sm text-base font-bold">
+                            <Panel key={item.key} header={item.header} className="bg-white rounded-sm text-base font-bold">
                                 {item.content}
                             </Panel>
                         ))}
