@@ -1,5 +1,6 @@
 import debug from "debug";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { addProfileService, uploadToS3Service } from "../../utilities/profile-service";
 import { PiCameraThin } from "react-icons/pi";
 import { toast, ToastContainer } from 'react-toastify';
@@ -22,6 +23,7 @@ export default function HomePageHero({ profileInfo, setProfileInfo }) {
         profileFileName: [],
     })
     const [status, setStatus] = useState(null);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setProfileData({
@@ -57,7 +59,7 @@ const handleImgFileInput = (e) => {
   try {
     let imgURL = null;
 
-    if (profileImageFiles.profilePicture.length > 0) {
+    if (Array.isArray(profileImageFiles.profilePicture) && profileImageFiles.profilePicture.length > 0) {
       const imgFormData = new FormData();
       profileImageFiles.profilePicture.forEach((img) => {
         imgFormData.append("images", img);
@@ -71,15 +73,17 @@ const handleImgFileInput = (e) => {
       profilePicture: imgURL,
     });
 
-    toast.success("Posted Chweet successfully.");
-    setProfileInfo([...profileInfo, newProfile]);
+    const updatedProfileInfo = {
+      ...profileInfo,
+      profile: newProfile,
+    };
+
+    setProfileInfo(updatedProfileInfo);
+
+    navigate("/home");
   } catch (err) {
-    if (err.message === "Unexpected end of JSON input") {
-      toast.error("Please try again later.");
-    } else {
-      toast.error("Try Again.");
-    }
-    setStatus("error");
+    console.error("Profile creation error:", err);
+    toast.error("Failed to create a profile. Please try again.");
   } finally {
     setStatus("success");
   }
@@ -102,7 +106,7 @@ const handleImgFileInput = (e) => {
             <div className="flex relative">
             <div className="relative">
                 <label htmlFor="profile-image" className="image-upload-button cursor-pointer">
-                <img src={profileImageFiles.profilePreview[0] || './assets/grey.png'} className="w-24 h-24 bg-gray-200 rounded-full mx-4 border-4 border-white cursor-pointer" />
+                <img src={profileImageFiles.profilePreview[0] || './assets/grey.png'} className="w-24 h-24 bg-gray-200 rounded-full mx-4 border-4 border-white cursor-pointer object-cover" />
                 <div className="absolute top-0 left-0 w-full h-full flex items-center justify-left">
                 <PiCameraThin className="w-8 h-8 mx-auto rounded-full text-gray-400 cursor-pointer" />
                 </div>
