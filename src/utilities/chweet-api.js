@@ -17,3 +17,7 @@ export function getAllPostsAPI() {
 export function deletePostAPI(postID) {
   return sendRequest(`${BASE_URL}/${postID}`, "DELETE");
 }
+
+export function updatePostAPI(postID, postData) {
+  return sendRequest(`${BASE_URL}/${postID}/edit`, "PATCH", postData);
+}
