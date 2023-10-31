@@ -9,6 +9,7 @@ import HomePage from '../HomePage/HomePage';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import ProfilePage from '../ProfilePage/ProfilePage';
 import EditProfile from "../../components/EditProfile/EditProfile"
+import HomePageHero from "../HomePage/HomePageHero";
 import { getUser } from "../../utilities/users-service";
 import { getAllPostsService } from "../../utilities/chweet-service";
 import { getProfileInfoService } from "../../utilities/profile-service";
@@ -60,6 +61,7 @@ function App() {
     {user ? (
         <Routes>
           <Route path="/home" element={<HomePage setUser={setUser} allPosts={allPosts} setAllPosts={setAllPosts} profileInfo={profileInfo} setProfileInfo={setProfileInfo} fetchAllPosts={fetchAllPosts} />} />
+          <Route path="/start" element={<HomePageHero setUser={setUser} profileInfo={profileInfo} setProfileInfo={setProfileInfo} />} />
           <Route path="/:username" element={<ProfilePage />} />
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/*" element={<ErrorPage />} />
