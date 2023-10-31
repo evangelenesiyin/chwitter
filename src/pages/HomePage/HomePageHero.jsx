@@ -8,10 +8,10 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const log = debug("chwitter:src:pages:HomePageHero");
 
-export default function HomePageHero({ profileInfo, setProfileInfo }) {
+export default function HomePageHero({ user, profileInfo, setProfileInfo }) {
     const initialProfileData = {
         displayName: "",
-        username: "",
+        username: user.username,
         bio: "",
         location: "",
         website: "",
@@ -89,6 +89,18 @@ const handleImgFileInput = (e) => {
   }
 };
 
+const isButtonDisabled = () => {
+    return (
+      !profileImageFiles.profilePicture.length ||
+      profileData.displayName === "" ||
+      profileData.displayName.length < 3 ||
+      profileData.displayName.length > 20 ||
+      profileData.bio.length > 150 ||
+      profileData.location.length > 30 ||
+      profileData.website.length > 30
+    );
+  };
+
   return (
     <>
     <ToastContainer />
@@ -122,37 +134,48 @@ const handleImgFileInput = (e) => {
             <span className="text-xs font-light text-gray-400 ml-2 my-auto">Upload a profile picture <span className="text-red-500"><span className="subscript">*</span>required</span></span>
             </div>
           <div className="mx-4 px-2 py-2">
-            <div className="border border-gray-300 py-2 pb-2 px-2 mb-3 text-sm font-light">
+            <div className="border border-gray-300 py-2 pb-2 px-2 mb-2 text-sm font-light">
                 <label htmlFor="displayName" className="text-gray-400">Display Name <span className="text-red-500 text-xs"><span className="subscript">*</span>required</span></label>
                 <input
                 type="text"
                 id="displayName"
                 name="displayName"
                 value={profileData.displayName}
-                className="w-full px-1"
+                className="w-full"
                 onChange={handleChange}
+                style={{ outline: 'none', border: 'none', }}
                  />
             </div>
-            <div className="border border-gray-300 py-2 pb-2 px-2 mb-3 text-sm font-light">
-                <label htmlFor="username" className="text-gray-400">Username <span className="text-red-500 text-xs"><span className="subscript">*</span>required</span></label>
+            {profileData.displayName !== "" && (profileData.displayName.length < 3 || profileData.displayName.length > 20) && (
+                <div className="text-red-500 text-xs -mt-1 mb-1">Display name must be between 3 to 20 characters.</div>
+            )}
+            <div className="border border-gray-300 bg-gray-200 py-2 pb-2 px-2 mb-3 text-sm font-light">
+                <label htmlFor="username" className="text-gray-400">Username <em>(same as login username)</em></label>
                 <input
                 type="text"
                 id="username"
                 name="username"
                 value={profileData.username}
-                className="w-full"
+                placeholder={user.username}
+                disabled
+                className="w-full text-gray-400"
                 onChange={handleChange} />
             </div>
             <div className="border border-gray-300 py-2 pb-2 px-2 mb-3 text-sm font-light">
                 <label htmlFor="bio" className="text-gray-400">Bio</label>
-                <input
+                <textarea
                 type="text"
                 id="bio"
                 name="bio"
                 value={profileData.bio}
                 className="w-full"
-                onChange={handleChange} />
+                onChange={handleChange}
+                style={{ outline: 'none', border: 'none', }}
+                />
             </div>
+            {profileData.bio.length > 150 && (
+                <div className="text-red-500 text-xs -mt-1 mb-1">Bio exceeded word limit of 150 words.</div>
+            )}
             <div className="border border-gray-300 py-2 pb-2 px-2 mb-3 text-sm font-light">
                 <label htmlFor="location" className="text-gray-400">Location</label>
                 <input
@@ -161,8 +184,13 @@ const handleImgFileInput = (e) => {
                 name="location"
                 value={profileData.location}
                 className="w-full"
-                onChange={handleChange} />
+                onChange={handleChange}
+                style={{ outline: 'none', border: 'none', }}
+                />
             </div>
+            {profileData.location.length > 30 && (
+                <div className="text-red-500 text-xs -mt-1 mb-1">Location input exceeded word limit of 30 words.</div>
+            )}
             <div className="border border-gray-300 py-2 pb-2 px-2 mb-3 text-sm font-light">
                 <label htmlFor="website" className="text-gray-400">Website</label>
                 <input
@@ -170,10 +198,24 @@ const handleImgFileInput = (e) => {
                 id="website"
                 name="website"
                 value={profileData.website}
-                className="w-full" onChange={handleChange} />
+                className="w-full"
+                onChange={handleChange}
+                style={{ outline: 'none', border: 'none', }}
+                />
             </div>
+            {profileData.website.length > 30 && (
+                <div className="text-red-500 text-xs -mt-1 mb-2">Website input exceeded word limit of 30 words.</div>
+            )}
             <div className="relative flex justify-center mb-2">
-            <button className="border border-coral bg-coral text-white py-1 px-3">
+            <button
+              className="border border-coral bg-coral rounded-sm text-white py-1 px-3"
+              disabled={isButtonDisabled()}
+              style={{
+                    background: isButtonDisabled() ? 'darkgrey' : '',
+                    border: isButtonDisabled() ? '2px solid darkgrey' : 'none',
+                    cursor: isButtonDisabled() ? 'not-allowed' : '',
+                    }}
+              >
                 Let's go!
             </button>
             </div>
