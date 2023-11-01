@@ -10,6 +10,6 @@ export function loginAPI(credentials) {
   return sendRequest(`${BASE_URL}/login`, "POST", credentials);
 }
 
-// export function checkTokenAPI() {
-//   return sendRequest(`${BASE_URL}/check-token`);
-// }
+export function deactivateAPI(userID) {
+  return sendRequest(`${BASE_URL}/${userID}/deactivate`, "PATCH");
+}

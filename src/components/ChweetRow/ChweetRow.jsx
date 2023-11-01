@@ -1,9 +1,10 @@
 import debug from "debug";
 import { useState } from "react";
+import { Link } from "react-router-dom"
 import { deletePostService } from "../../utilities/chweet-service";
+import { deactivateService } from "../../utilities/users-service";
 import EditChweet from "../EditChweet/EditChweet";
-import { formatDistanceToNow } from 'date-fns';
-import { parseISO } from 'date-fns';
+import formatDate from "../helpers/formatDate";
 import { PiDotsThreeBold } from "react-icons/pi";
 import { Dropdown, Space, Modal } from 'antd';
 import { toast, ToastContainer } from 'react-toastify';
@@ -12,7 +13,7 @@ import { motion } from "framer-motion";
 
 const log = debug("chwitter:src:components:ChweetRow");
 
-export default function ChweetRow({ post, setPost, fetchAllPosts }) {
+export default function ChweetRow({ user, post, fetchAllPosts }) {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const modalWidth = "40%";
@@ -25,52 +26,76 @@ export default function ChweetRow({ post, setPost, fetchAllPosts }) {
     setOpen(false);
   }
 
-  const items = [
+  const adminItems = [
   {
     label: (
       <a
-      target="_blank"
-      rel="noopener noreferrer"
-      href="/"
-      >
-        Save Post
-      </a>
-    ),
-    key: '0',
-  },
-    {
-    label: (
-      <a
-      target="_blank"
-      rel="noopener noreferrer"
-      href="/"
-      onClick={(e) => {
-        e.preventDefault();
-        showModal();
-      }}
-      >
-        Edit Text
-      </a>
-    ),
-    key: '1',
-  },
-  {
-    label: (
-      <a
-      target="_blank"
-      rel="noopener noreferrer"
-      href="/"
-      onClick={(e) => {
-        e.preventDefault();
-        handleDelete(post._id);
-      }}
+        target="_blank"
+        rel="noopener noreferrer"
+        href="/"
+        onClick={(e) => {
+          e.preventDefault();
+          handleDelete(post._id);
+        }}
       >
         Delete
       </a>
     ),
-    key: '2',
+    key: '0',
+  },
+  {
+    label: (
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="/"
+        onClick={(e) => {
+          e.preventDefault();
+          handleDeactivate(post.user._id);
+        }}
+      >
+        Deactivate User
+      </a>
+    ),
+    key: '1',
   },
 ];
+
+const userItems = [
+  {
+    label: (
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="/"
+        onClick={(e) => {
+          e.preventDefault();
+          showModal();
+        }}
+      >
+        Edit Text
+      </a>
+    ),
+    key: '0',
+  },
+  {
+    label: (
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="/"
+        onClick={(e) => {
+          e.preventDefault();
+          handleDelete(post._id);
+        }}
+      >
+        Delete
+      </a>
+    ),
+    key: '1',
+  },
+];
+
 
 const handleDelete = async (postID) => {
     log("Deleting post with ID:", postID);
@@ -83,6 +108,16 @@ const handleDelete = async (postID) => {
          toast.error("Unable to delete Chweet.");
       }
   };
+
+const handleDeactivate = async () => {
+  try {
+    await deactivateService(post.user._id);
+    toast.success("User successfully deactivated.")
+  } catch (err) {
+    log("Error deactivating user", err);
+    toast.error("Unable to deactivate user.")
+  }
+}
 
     return (
         <>
@@ -104,33 +139,31 @@ const handleDelete = async (postID) => {
             gridTemplateRows: '30px 90% 30px',
             }} >
                 <div className="bg-white col-span-1 row-span-3 h-auto">
-                    <img
+                    <Link to={`/${post.user.profile.username}`}><img
                     src={post?.user?.profile?.profilePicture}
                     className="rounded-full h-16 mx-auto mt-2"
-                    />
+                    /></Link>
                 </div>
                 <div className="flex bg-white col-span-1 row-span-1 w-full my-2">
-                    <span className="font-bold">{post?.user?.profile?.displayName}</span>&nbsp;
-                    <span className="text-gray-400">{"@"}{post?.user?.profile?.username}</span>&nbsp;
+                    <span className="font-bold"><Link to={`/${post.user.profile.username}`}>{post?.user?.profile?.displayName}</Link></span>&nbsp;
+                    <span className="text-gray-400"><Link to={`/${post.user.profile.username}`}>{"@"}{post?.user?.profile?.username}</Link></span>&nbsp;
                     <span className="text-gray-400">·</span>&nbsp;
-                    <span className="text-gray-400">{formatDistanceToNow(parseISO(post?.createdAt))} ago</span>
+                    <span className="text-gray-400">{formatDate(post?.createdAt)}</span>
+                    {user && (user.admin === true || post.user._id === user._id) ? (
                     <span className="ml-auto pr-4 text-gray-500 cursor-pointer">
-                    <Dropdown
-                    menu={{
-                    items,
-                    }}
-                    >
-                    <a onClick={(e) => e.preventDefault()}>
-                    <Space>
-                        <PiDotsThreeBold />
-                    </Space>
-                    </a>
-                    </Dropdown>
+                      <Dropdown menu={{ items: user.admin === true ? adminItems : userItems }}>
+                        <a onClick={(e) => e.preventDefault()}>
+                          <Space>
+                            <PiDotsThreeBold />
+                          </Space>
+                        </a>
+                      </Dropdown>
                     </span>
+                  ) : null}
                 </div>
                 <div className="bg-white col-span-1 row-span-1 w-full pb-1 mt-1">
                     <div className="my-2 font-light text-sm">
-                    <div><span className="font-medium">Type:</span>{' '}{post?.type}</div>
+                    <div><span className="font-semibold">Type:</span>{' '}{post?.type}</div>
                     <div><span className="font-semibold">Breed:</span>{' '}{post?.breed}</div>
                     <div><span className="font-semibold">Gender:</span>{' '}{post?.gender}</div>
                     <div><span className="font-semibold">Sterilised:</span>{' '}{post?.sterilised}</div>

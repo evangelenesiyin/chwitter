@@ -40,6 +40,9 @@ async function login(req, res) {
     const user = await User.findOne({ username: req.body.username });
     debug("user", user);
     if (user === null) throw new Error("User does not exist.");
+    if (user.deactivated) {
+      sendResponse(res, 401, "Account has been deactivated.");
+    }
     const match = await bcrypt.compare(req.body.password, user.password);
     if (!match) throw new Error("Incorrect password!");
     const token = createJWT(user);
@@ -61,10 +64,27 @@ async function login(req, res) {
   }
 }
 
+async function deactivate(req, res) {
+  debug("see req.user: %o", req.user);
+  try {
+    const userID = req.params.userID;
+    await User.findByIdAndUpdate(
+      userID,
+      {
+        deactivated: true,
+      },
+      { new: true }
+    );
+    sendResponse(res, 200);
+  } catch (err) {
+    sendResponse(res, 500, "Error deactivating user.");
+  }
+}
+
 //* ===== Helper Functions ===== *//
 
 function createJWT(user) {
   return jwt.sign({ user }, process.env.SECRET, { expiresIn: "24h" });
 }
 
-module.exports = { create, login };
+module.exports = { create, login, deactivate };
