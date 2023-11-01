@@ -95,12 +95,12 @@ export default function SignUpForm({ setUser, status, setStatus }) {
                     className="border border-white w-4/5 py-1 px-2 mt-1 mx-8 rounded"
                     style={{
                     border:
-                        (userData.username !== "" && userData.username.length < 2) || userData.username.length > 15
+                        (userData.username !== "" && userData.username.length < 3) || userData.username.length > 20
                         ? "2px solid red"
                         : "",
                     }}
                     ></input>
-                    {userData.username !== "" && (userData.username.length < 2 || userData.username.length > 15) && (
+                    {userData.username !== "" && (userData.username.length < 3 || userData.username.length > 20) && (
                     <div className="text-red-300 text-sm mx-8 -mb-2">Username must be between 3 to 20 characters. Letters and numbers only.</div>
                     )}
                 <div className="pt-6">

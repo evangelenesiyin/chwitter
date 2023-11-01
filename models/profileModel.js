@@ -14,15 +14,15 @@ const profileSchema = new Schema(
     username: {
       type: String,
       required: true,
+      unique: true,
       trim: true,
-      default: "",
       minLength: 3,
       maxLength: 20,
     },
     bio: {
       type: String,
       trim: true,
-      maxLength: 100,
+      maxLength: 150,
     },
     location: {
       type: String,
