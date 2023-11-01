@@ -20,6 +20,7 @@ module.exports = {
         ],
         roboto: ["Roboto", "sans-serif"],
         inter: ["Inter", "sans-serif"],
+        fredoka: ["Fredoka", "sans-serif"],
       },
       fontSize: {
         body: "16px",
@@ -29,10 +30,6 @@ module.exports = {
         beige: "#F5DDCB",
         darkred: "#BD7678",
         coral: "#DB9186",
-      },
-      spacing: {
-        "h-120": "30rem",
-        "h-144": "36rem",
       },
     },
   },
