@@ -2,14 +2,15 @@ import { format, parseISO } from "date-fns";
 
 export default function formatDate(createdAt) {
   const now = new Date();
-  const differenceInMinutes = Math.floor(
-    (now - parseISO(createdAt)) / (1000 * 60)
-  );
+  const differenceInSeconds = Math.floor((now - parseISO(createdAt)) / 1000);
 
-  if (differenceInMinutes < 60) {
-    return `${differenceInMinutes}m`;
-  } else if (differenceInMinutes < 1440) {
-    const hours = Math.floor(differenceInMinutes / 60);
+  if (differenceInSeconds < 60) {
+    return `${differenceInSeconds}s`;
+  } else if (differenceInSeconds < 3600) {
+    const minutes = Math.floor(differenceInSeconds / 60);
+    return `${minutes}m`;
+  } else if (differenceInSeconds < 86400) {
+    const hours = Math.floor(differenceInSeconds / 3600);
     return `${hours}h`;
   } else {
     return format(parseISO(createdAt), "MMM dd", {
