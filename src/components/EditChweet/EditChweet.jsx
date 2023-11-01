@@ -1,6 +1,5 @@
 import debug from "debug";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
 import { updatePostService } from "../../utilities/chweet-service";
 import { Input, Select } from 'antd';
 import { toast, ToastContainer } from 'react-toastify';
