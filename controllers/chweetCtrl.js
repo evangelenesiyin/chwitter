@@ -60,10 +60,13 @@ async function getAllPosts(req, res) {
 async function del(req, res) {
   debug("see req.params: %o", req.params);
   try {
-    const post = await Chweet.findOneAndDelete({
-      _id: req.params.postID,
-      user: req.user._id,
-    });
+    let query = { _id: req.params.postID };
+
+    if (!req.user.admin) {
+      query.user = req.user._id;
+    }
+
+    const post = await Chweet.findOneAndDelete(query);
     debug("delete post by user: %o", post);
     sendResponse(res, 200);
   } catch (err) {
