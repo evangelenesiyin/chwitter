@@ -47,8 +47,7 @@ Pressing the "Let's Go" button, or log in as an existing user to be directed to 
 The steps I took to build this project are outlined below:
 1. Using a Kanban board, I planned out the Ice Box items that I wanted to implement in my project. I placed myself in the shoes of potential users and the administrator overseeing the application. I had to take into consideration the navigation of webpages for visitors with unauthorised access, or when an invalid url has been entered. With these in mind, I drafted the layout, design, features and React components of the application in a wireframe.
 
-Trello board - https://trello.com/b/TCvigjsp/chwitter
-Wireframe - https://www.figma.com/file/fhiR5q3xhMy9YGOEtDw5HM/Chwitter?type=design&node-id=0%3A1&mode=design&t=Wrx1VVoYy24Id6kv-1
+View my <a href="https://trello.com/b/TCvigjsp/chwitter">Trello board</a>, <a href="https://www.figma.com/file/fhiR5q3xhMy9YGOEtDw5HM/Chwitter?type=design&node-id=0%3A1&mode=design&t=Wrx1VVoYy24Id6kv-1">Wireframe</a> and <a href="https://lucid.app/lucidchart/73734e41-9da4-4039-bc26-c75b121e1932/edit?viewport_loc=-1757%2C-978%2C1305%2C807%2C0_0&invitationId=inv_2b5f2861-899c-434c-91a8-04232c1eb313">Entity Relationship (ER) Diagram</a>.
 
 2. Build the skeleton and components of the application using React, Tailwind CSS and Ant Design.
 3. Set-up controllers, models, routes, etc, and connect to MongoDB to fetch, delete and patch data.
