@@ -1,8 +1,8 @@
 import debug from "debug";
 import { useState } from "react";
-import { Link } from "react-router-dom"
 import { deletePostService } from "../../utilities/chweet-service";
 import { deactivateService } from "../../utilities/users-service";
+import { addLikeService, deleteLikeService, getLikesService } from "../../utilities/like-service";
 import EditChweet from "../EditChweet/EditChweet";
 import formatDate from "../helpers/formatDate";
 import { PiDotsThreeBold } from "react-icons/pi";
@@ -11,13 +11,14 @@ import { Dropdown, Space, Modal } from 'antd';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 const log = debug("chwitter:src:components:ChweetRow");
 
 export default function ChweetRow({ user, post, fetchAllPosts }) {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
+  const [likeCount, setLikeCount] = useState(post?.likes);
   const [liked, setLiked] = useState(false);
   const modalWidth = "40%";
 
@@ -125,20 +126,34 @@ const handleDeactivate = async () => {
 const handleAddLike = async () => {
   try {
     if (!liked) {
-    await addLikeService(post._id);
+    await addLikeService({ chweet: post._id, user: user._id });
+    setLiked(true);
     setLikeCount(likeCount + 1);
-    } else {
-      await deleteLikeService(post._id);
+    } else if (likeCount > 0) {
+      await deleteLikeService({ chweet: post._id, user: user._id });
+      setLiked(false);
       setLikeCount(likeCount - 1);
     }
-    setLiked(!liked);
-    toast.success(liked ? "Unliked Chweet" : "Liked Chweet");
   } catch (err) {
     log("Error toggling like:", err);
-    toast.error("Unable to toggle like Chweet.")
+    toast.error("Action failed.")
   }
 }
 
+useEffect(() => {
+  const getIsLiked = async () => {
+      const getLikes = await getLikesService({ chweet: post._id, user: post.user._id });
+      console.log(getLikes);
+      if (getLikes.data.likes !== null) {
+        if (getLikes.data.likes.user === user._id) {
+          setLiked(true);
+        } else {
+          setLiked(false);
+        }
+      }
+  }
+  getIsLiked();
+}, user)
 
     return (
         <>
@@ -160,14 +175,14 @@ const handleAddLike = async () => {
             gridTemplateRows: '30px auto 40px',
             }} >
                 <div className="bg-white col-span-1 row-span-3 h-auto">
-                    <Link to={`/${post.user.profile.username}`}><img
+                    <img
                     src={post?.user?.profile?.profilePicture}
                     className="rounded-full h-16 mx-auto mt-2"
-                    /></Link>
+                    />
                 </div>
                 <div className="flex bg-white col-span-1 row-span-1 w-full my-2">
-                    <span className="font-bold"><Link to={`/${post.user.profile.username}`}>{post?.user?.profile?.displayName}</Link></span>&nbsp;
-                    <span className="text-gray-400"><Link to={`/${post.user.profile.username}`}>{"@"}{post?.user?.profile?.username}</Link></span>&nbsp;
+                    <span className="font-bold">{post?.user?.profile?.displayName}</span>&nbsp;
+                    <span className="text-gray-400">{"@"}{post?.user?.profile?.username}</span>&nbsp;
                     <span className="text-gray-400">·</span>&nbsp;
                     <span className="text-gray-400">{formatDate(post?.createdAt)}</span>
                     {user && (user.admin === true || post.user._id === user._id) ? (
@@ -197,9 +212,9 @@ const handleAddLike = async () => {
                 </div>
                 <div className="flex bg-white col-span-1 row-span-1 w-full items-center">
                     <span className=" text-gray-400 cursor-pointer" onClick={handleAddLike}>
-                    {liked ? <AiFillHeart className="w-4 h-4" /> : <AiOutlineHeart className="w-4 h-4" />}
+                    {liked ? <AiFillHeart className="w-4 h-4 text-red-500" /> : <AiOutlineHeart className="w-4 h-4" />}
                   </span>
-                    <span className=" text-gray-400 font-light text-xs ml-1 cursor-pointer">{likeCount}
+                    <span className=" text-gray-400 font-light text-xs ml-1 cursor-pointer">{likeCount === 0 ? "" : likeCount}
                     </span>
                 </div>
             </div>
