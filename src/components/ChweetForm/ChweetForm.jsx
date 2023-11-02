@@ -116,7 +116,7 @@ export default function ChweetForm({ allPosts, setAllPosts, profileInfo, fetchAl
     <ToastContainer />
     <div className="relative">
       <div
-        className="grid grid-cols-2 grid-rows-2 gap-0 bg-white h-auto w-3/4 rounded-sm mt-6"
+        className="grid grid-cols-2 grid-rows-2 gap-0 bg-white h-auto w-3/4 rounded-sm"
         style={{
           gridTemplateColumns: '15% 85%',
           gridTemplateRows: '65% 35%',
