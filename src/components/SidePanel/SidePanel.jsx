@@ -1,6 +1,8 @@
 import { Collapse } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { logOutService } from "../../utilities/users-service";
+import { CiLocationOn } from "react-icons/ci";
+import { BsLink45Deg } from "react-icons/bs";
 
 const { Panel } = Collapse;
 
@@ -37,8 +39,17 @@ export default function SidePanel({ setUser, profileInfo }) {
                     <div className="text-center px-4 py-2">
                         <p className="font-bold text-xl">{profileInfo?.displayName}</p>
                         <p className="text-gray-400 mb-2">{"@"}{profileInfo?.username}</p>
-                        <p className="text-gray-400">{profileInfo?.bio}</p>
-                        <Link to={`/${profileInfo?.username}`}><p className="mt-6 mb-2 font-bold text-base text-coral">View full profile</p></Link>
+                        <p className="text-gray-400 mx-2">{profileInfo?.bio}</p>
+                        {profileInfo?.location !== "" &&
+                        <div className="text-gray-400 flex justify-center">
+                        <CiLocationOn className="w-6 h-6 mt-4 mr-1" />
+                        <span className="flex mt-4 text-sm">{profileInfo?.location}</span>
+                        </div>}
+                        {profileInfo?.website !== "" &&
+                        <div className="text-gray-400 flex justify-center mb-2">
+                        <BsLink45Deg className="w-6 h-6 mt-1 mr-1" />
+                        <span className="flex mt-1 text-sm">{profileInfo?.website}</span>
+                        </div>}
                     </div>
                 </div>
                 <div className="w-1/2 h-12 ml-64 sm:ml-64 md:ml-64 lg:ml-64 xl:ml-64 2xl:ml-80">
