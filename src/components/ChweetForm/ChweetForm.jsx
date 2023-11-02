@@ -87,7 +87,6 @@ export default function ChweetForm({ allPosts, setAllPosts, profileInfo, fetchAl
       images: imgURL,
     });
 
-    setAllPosts([newPost, ...allPosts]);
     toast.success("Posted Chweet successfully.");
     resetPostForm();
     fetchAllPosts();
