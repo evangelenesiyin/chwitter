@@ -105,6 +105,9 @@ const isButtonDisabled = () => {
     <>
     <ToastContainer />
     <main className="min-h-screen min-w-screen bg-beige p-0 mx-auto grid">
+      <div className="mx-80 font-light text-center">
+      <p>Welcome to <strong className="text-darkred font-fredoka">Chwitter</strong>, a pet adoption directory built for both animal adoption centres, and individuals who are keen to adopt a pet or raise awareness about stray animals in your vicinity who are in need of care.<br /><br />Please set up your profile to proceed.</p>
+        </div>
       <div className="flex items-center justify-center mx-56 mb-28">
         <div className="bg-white w-3/5 rounded-sm">
             <form
