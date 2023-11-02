@@ -4,13 +4,11 @@ Inspired by Twitter's old website layout in 2014, Chwitter is built as a platfor
 
 ## Table of Contents
 
-- Deployment
-- Technologies Used
-- How To Use
-- Project Planning and Development
-- Challenges
-- Key Learnings
-- Future Developments
+- <a href="https://github.com/evangelenesiyin/chwitter#deployment">Deployment</a>
+- <a href="https://github.com/evangelenesiyin/chwitter#technologies-used">Technologies Used</a>
+- <a href="https://github.com/evangelenesiyin/chwitter#how-to-use">How To Use</a>
+- <a href="https://github.com/evangelenesiyin/chwitter#project-planning-and-development">Project Planning and Development</a>
+- <a href="https://github.com/evangelenesiyin/chwitter#future-developments">Future Developments</a>
 
 ## Deployment
 
@@ -33,8 +31,8 @@ Chwitter is built using the MERN stack and other libraries:
 
 To use Chwitter, begin by signing up as a new user or log in as an existing user.
 
-<img src="https://github.com/evangelenesiyin/chwitter/assets/108106809/79ed8245-af0c-421c-9db6-9cb1ef167727" width="450">
-<img src="https://github.com/evangelenesiyin/chwitter/assets/108106809/92036643-2a94-40a4-b1f9-968ab96e974d" width="450">
+<img src="https://github.com/evangelenesiyin/chwitter/assets/108106809/79ed8245-af0c-421c-9db6-9cb1ef167727">
+<img src="https://github.com/evangelenesiyin/chwitter/assets/108106809/92036643-2a94-40a4-b1f9-968ab96e974d">
 
 New users will be directed to the profile creation page to fill in their details.
 
