@@ -57,20 +57,23 @@ function App() {
 
   return (
   <>
-    <NavBar />
     {user ? (
+      <>
+    <NavBar />
         <Routes>
           <Route path="/home" element={<HomePage user={user} setUser={setUser} allPosts={allPosts} setAllPosts={setAllPosts} profileInfo={profileInfo} setProfileInfo={setProfileInfo} fetchAllPosts={fetchAllPosts} />} />
           <Route path="/start" element={<HomePageHero user={user} setUser={setUser} profileInfo={profileInfo} setProfileInfo={setProfileInfo} />} />
           <Route path="/:username" element={<ProfilePage allPosts={allPosts} profileInfo={profileInfo} />} />
-          <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/*" element={<ErrorPage />} />
         </Routes>
+        </>
     ) : (
-      <main className="min-h-screen min-w-screen bg-beige p-0 m-0 grid grid-cols-3">
+      <>
+      <NavBar />
+      <div className="bg-beige p-0 m-0 grid grid-cols-3">
         <div className="col-span-1 items-center justify-center h-screen flex">
           <div className="text-title text-white text-right font-fredoka break-words leading-tight mb-28 -mr-12">
-            <span>FINDING</span> <span>HOMES FOR</span> <span>YOUR</span> <span className="text-coral">@CHWITTER</span>
+            <span>FINDING</span> <span>HOMES FOR</span> <span>YOUR PETS</span> <span className="text-coral">@CHWITTER</span>
           </div>
         </div>
         <div className="col-span-1 items-center justify-center h-screen flex">
@@ -88,7 +91,8 @@ function App() {
             <LoginForm setUser={setUser} status={status} setStatus={setStatus} />
           </TabPanel>
         </Tabs>
-      </main>
+      </div>
+      </>
     )}
   </>
 );
