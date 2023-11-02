@@ -18,9 +18,14 @@ function uploadImg(req, res) {
 }
 
 async function createProfile(req, res) {
+  const { displayName, username, bio, location, website } = req.body;
+
+  if (displayName === "") {
+    return sendResponse(res, 400, null, "Missing or invalid input data");
+  }
+
   try {
     debug("req.body: %o", req.body);
-    const { displayName, username, bio, location, website } = req.body;
     const profileInfo = { displayName, username, bio, location, website };
     const newProfile = await Profile.create({
       ...profileInfo,

@@ -19,8 +19,26 @@ function uploadImg(req, res) {
 async function createPost(req, res) {
   debug("req.body: %o", req.body);
   const { type, breed, gender, sterilised, contactDetails, remarks } = req.body;
-  const postInfo = { type, breed, gender, sterilised, contactDetails, remarks };
+
+  if (
+    type === "" ||
+    breed === "" ||
+    gender === "" ||
+    sterilised === "" ||
+    contactDetails === ""
+  ) {
+    return sendResponse(res, 400, null, "Missing or invalid input data");
+  }
+
   try {
+    const postInfo = {
+      type,
+      breed,
+      gender,
+      sterilised,
+      contactDetails,
+      remarks,
+    };
     const newPost = await Chweet.create({
       ...postInfo,
       imageURL: req.body.images,
