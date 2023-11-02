@@ -6,6 +6,7 @@ import { deactivateService } from "../../utilities/users-service";
 import EditChweet from "../EditChweet/EditChweet";
 import formatDate from "../helpers/formatDate";
 import { PiDotsThreeBold } from "react-icons/pi";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { Dropdown, Space, Modal } from 'antd';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,6 +17,8 @@ const log = debug("chwitter:src:components:ChweetRow");
 export default function ChweetRow({ user, post, fetchAllPosts }) {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const [liked, setLiked] = useState(false);
   const modalWidth = "40%";
 
   const showModal = () => {
@@ -119,6 +122,24 @@ const handleDeactivate = async () => {
   }
 }
 
+const handleAddLike = async () => {
+  try {
+    if (!liked) {
+    await addLikeService(post._id);
+    setLikeCount(likeCount + 1);
+    } else {
+      await deleteLikeService(post._id);
+      setLikeCount(likeCount - 1);
+    }
+    setLiked(!liked);
+    toast.success(liked ? "Unliked Chweet" : "Liked Chweet");
+  } catch (err) {
+    log("Error toggling like:", err);
+    toast.error("Unable to toggle like Chweet.")
+  }
+}
+
+
     return (
         <>
         <ToastContainer />
@@ -136,7 +157,7 @@ const handleDeactivate = async () => {
             className="grid grid-cols-2 grid-rows-3 gap-0 border border-gray-100 bg-white h-auto w-3/4 rounded-sm"
             style={{
             gridTemplateColumns: '15% 85%',
-            gridTemplateRows: '30px 90% 30px',
+            gridTemplateRows: '30px auto 40px',
             }} >
                 <div className="bg-white col-span-1 row-span-3 h-auto">
                     <Link to={`/${post.user.profile.username}`}><img
@@ -150,18 +171,18 @@ const handleDeactivate = async () => {
                     <span className="text-gray-400">·</span>&nbsp;
                     <span className="text-gray-400">{formatDate(post?.createdAt)}</span>
                     {user && (user.admin === true || post.user._id === user._id) ? (
-                    <span className="ml-auto pr-4 text-gray-500 cursor-pointer">
+                    <span className="ml-auto pr-4 text-gray-600 cursor-pointer">
                       <Dropdown menu={{ items: user.admin === true ? adminItems : userItems }}>
                         <a onClick={(e) => e.preventDefault()}>
                           <Space>
-                            <PiDotsThreeBold />
+                            <PiDotsThreeBold className="w-6 h-6"/>
                           </Space>
                         </a>
                       </Dropdown>
                     </span>
                   ) : null}
                 </div>
-                <div className="bg-white col-span-1 row-span-1 w-full pb-1 mt-1">
+                <div className="bg-white col-span-1 row-span-1 w-full">
                     <div className="my-2 font-light text-sm">
                     <div><span className="font-semibold">Type:</span>{' '}{post?.type}</div>
                     <div><span className="font-semibold">Breed:</span>{' '}{post?.breed}</div>
@@ -170,9 +191,16 @@ const handleDeactivate = async () => {
                     <div><span className="font-semibold">Contact:</span>{' '}{post?.contactDetails}</div>
                     <div><span className="font-semibold">Remarks:</span>{' '}{post?.remarks}</div>
                     </div>
-                    <div className="mb-2">
+                    <div className="">
                     <img src={post?.imageURL} className="h-full w-3/5" />
                     </div>
+                </div>
+                <div className="flex bg-white col-span-1 row-span-1 w-full items-center">
+                    <span className=" text-gray-400 cursor-pointer" onClick={handleAddLike}>
+                    {liked ? <AiFillHeart className="w-4 h-4" /> : <AiOutlineHeart className="w-4 h-4" />}
+                  </span>
+                    <span className=" text-gray-400 font-light text-xs ml-1 cursor-pointer">{likeCount}
+                    </span>
                 </div>
             </div>
         </div>

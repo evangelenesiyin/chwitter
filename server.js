@@ -10,6 +10,7 @@ const checkToken = require("./config/checkToken");
 const usersRouter = require("./routes/usersRouter");
 const chweetRouter = require("./routes/chweetRouter");
 const profileRouter = require("./routes/profileRouter");
+const likeRouter = require("./routes/likeRouter");
 
 //* App
 const app = express();
@@ -25,6 +26,7 @@ app.use(checkToken);
 app.use("/api/users", usersRouter);
 app.use("/api/chweet", chweetRouter);
 app.use("/api/profile", profileRouter);
+app.use("/api/like", likeRouter);
 
 //* Listener
 const port = process.env.PORT || 3000;
