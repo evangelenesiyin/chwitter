@@ -22,8 +22,6 @@ export default function SidePanel({ setUser, profileInfo }) {
             header: "Account",
             content: (
                 <>
-                    <Link to="/edit-profile">Edit Profile</Link>
-                    <hr className="my-2" />
                     <Link to="/" onClick={handleLogOut}>Logout</Link>
                 </>
             ),
