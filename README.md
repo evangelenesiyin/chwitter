@@ -33,8 +33,8 @@ Chwitter is built using the MERN stack and other libraries:
 
 To use Chwitter, begin by signing up as a new user or log in as an existing user.
 
-<img src="https://github.com/evangelenesiyin/chwitter/assets/108106809/79ed8245-af0c-421c-9db6-9cb1ef167727" width="480">
-<img src="https://github.com/evangelenesiyin/chwitter/assets/108106809/92036643-2a94-40a4-b1f9-968ab96e974d" width="480">
+<img src="https://github.com/evangelenesiyin/chwitter/assets/108106809/79ed8245-af0c-421c-9db6-9cb1ef167727" width="450">
+<img src="https://github.com/evangelenesiyin/chwitter/assets/108106809/92036643-2a94-40a4-b1f9-968ab96e974d" width="450">
 
 New users will be directed to the profile creation page to fill in their details.
 
@@ -46,8 +46,20 @@ Pressing the "Let's Go" button, or log in as an existing user to be directed to 
 
 ## Project Planning and Development
 
-## Challenges
+The steps I took to build this project are outlined below:
+1. Using a Kanban board, I planned out the Ice Box items that I wanted to implement in my project. I placed myself in the shoes of potential users and the administrator overseeing the application. I had to take into consideration the navigation of webpages for visitors with unauthorised access, or when an invalid url has been entered. With these in mind, I drafted the layout, design, features and React components of the application in a wireframe.
 
-## Key Learningss
+Trello board - https://trello.com/b/TCvigjsp/chwitter
+Wireframe - https://www.figma.com/file/fhiR5q3xhMy9YGOEtDw5HM/Chwitter?type=design&node-id=0%3A1&mode=design&t=Wrx1VVoYy24Id6kv-1
+
+2. Build the skeleton and components of the application using React, Tailwind CSS and Ant Design.
+3. Set-up controllers, models, routes, etc, and connect to MongoDB to fetch, delete and patch data.
+4. Set-up AWS S3 Bucket for uploading and removing images.
 
 ## Future Developments
+
+As I didn't have enough time before the project deadline to complete some of the Ice Box items, I aim to integrate these into the application:
+
+* Full profile page to display profile info and posts, accessible by the public regardless of login status
+* Filter posts according to type of animal, etc
+* Filter/ search for specific users
