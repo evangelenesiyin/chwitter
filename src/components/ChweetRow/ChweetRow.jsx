@@ -143,7 +143,6 @@ const handleAddLike = async () => {
 useEffect(() => {
   const getIsLiked = async () => {
       const getLikes = await getLikesService({ chweet: post._id, user: post.user._id });
-      console.log(getLikes);
       if (getLikes.data.likes !== null) {
         if (getLikes.data.likes.user === user._id) {
           setLiked(true);

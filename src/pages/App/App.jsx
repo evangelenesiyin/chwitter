@@ -7,8 +7,6 @@ import SignUpForm from "../../components/SignUpForm/SignUpForm";
 import NavBar from "../../components/NavBar/NavBar";
 import HomePage from '../HomePage/HomePage';
 import ErrorPage from '../ErrorPage/ErrorPage';
-import ProfilePage from '../ProfilePage/ProfilePage';
-import EditProfile from "../../components/EditProfile/EditProfile"
 import HomePageHero from "../HomePage/HomePageHero";
 import { getUser } from "../../utilities/users-service";
 import { getAllPostsService } from "../../utilities/chweet-service";
@@ -63,7 +61,6 @@ function App() {
         <Routes>
           <Route path="/home" element={<HomePage user={user} setUser={setUser} allPosts={allPosts} setAllPosts={setAllPosts} profileInfo={profileInfo} setProfileInfo={setProfileInfo} fetchAllPosts={fetchAllPosts} />} />
           <Route path="/start" element={<HomePageHero user={user} setUser={setUser} profileInfo={profileInfo} setProfileInfo={setProfileInfo} />} />
-          <Route path="/:username" element={<ProfilePage allPosts={allPosts} profileInfo={profileInfo} />} />
           <Route path="/*" element={<ErrorPage />} />
         </Routes>
         </>
@@ -73,7 +70,7 @@ function App() {
       <div className="bg-beige p-0 m-0 grid grid-cols-3">
         <div className="col-span-1 items-center justify-center h-screen flex">
           <div className="text-title text-white text-right font-fredoka break-words leading-tight mb-28 -mr-12">
-            <span>FINDING</span> <span>HOMES FOR</span> <span>YOUR PETS</span> <span className="text-coral">@CHWITTER</span>
+            <div>FINDING</div> <div>HOMES FOR</div> <div>YOUR PETS</div> <div className="text-coral">@CHWITTER</div>
           </div>
         </div>
         <div className="col-span-1 items-center justify-center h-screen flex">
