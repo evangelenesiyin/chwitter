@@ -1,62 +1,50 @@
-# Chwitter - A Twitter-inspired Pet Adoption Directory
+## 🐥 Chwitter - A Twitter-inspired Pet Adoption Directory
 
 Inspired by Twitter's old website layout in 2014, Chwitter is built as a platform to raise awareness of animals in need of pet owners through a central pet adoption directory. Animal shelters, pet welfare organisations, and individuals who are keen to adopt pets, or raise awareness of stray animals in the vicinity are able to contribute to this platform.
 
-## Table of Contents
+## ✨ Features
 
-- <a href="https://github.com/evangelenesiyin/chwitter#deployment">Deployment</a>
-- <a href="https://github.com/evangelenesiyin/chwitter#technologies-used">Technologies Used</a>
-- <a href="https://github.com/evangelenesiyin/chwitter#how-to-use">How To Use</a>
-- <a href="https://github.com/evangelenesiyin/chwitter#project-planning-and-development">Project Planning and Development</a>
-- <a href="https://github.com/evangelenesiyin/chwitter#future-developments">Future Developments</a>
+- 👥 User authentication for sign up/log in
+- 🖱️ Set-up profile
+- 🐈 Enter pet details in a post
+- 🐈‍⬛ Preview and upload image to accompany the post
+- 🐕 View all posts made by other users in the form of a timeline
+- 🐩 Edit posts made by your account
+- 🐇 Delete posts made by your account
+- 🦜 Like posts made by other users
+- 🔧 Admin account available with permissions to delete posts and deactivate users
 
-## Deployment
+## 🛠️ Technologies Used
 
-Chwitter is deployed using Render, click here to view the application - https://chwitter.onrender.com
+- `Vite`
+- `React`
+- `MongoDB`
+- `Express.js`
+- `Node.js`
+- `JSON Web Token (JWT)`
+- `Bcrypt`
+- `AWS S3 Bucket`
+- `Tailwind CSS`
+- `Ant Design`
+- `Framer-Motion`
 
-## Technologies Used
+## 📝 Process
 
-Chwitter is built using the MERN stack and other libraries:
+This is my capstone project during my course at General Assembly. I was given 2 weeks or so to complete this project.
 
-- MongoDB (with Mongoose)
-- Express.js
-- React
-- Node.js
-- JWT (JSON Web Token)
-- Bcrypt
-- AWS S3 Bucket, Multer, UUID
-- Tailwind CSS and Ant Design
+Using a Kanban board, I planned out the Ice Box items that I wanted to implement in my project. I placed myself in the shoes of potential users and the administrator overseeing the application. I had to take into consideration the navigation of webpages for visitors with unauthorised access, or when an invalid url has been entered. With these in mind, I drafted the layout, design, features and React components of the application in a wireframe. [Trello](https://trello.com/b/TCvigjsp/chwitter) [Wireframe](https://www.figma.com/file/fhiR5q3xhMy9YGOEtDw5HM/Chwitter?type=design&node-id=0%3A1&mode=design&t=Wrx1VVoYy24Id6kv-1) [Entity Relationship (ER) Diagram](https://lucid.app/lucidchart/73734e41-9da4-4039-bc26-c75b121e1932/edit?viewport_loc=-1757%2C-978%2C1305%2C807%2C0_0&invitationId=inv_2b5f2861-899c-434c-91a8-04232c1eb313)
 
-## How To Use
+## 💭 Improvements
 
-To use Chwitter, begin by signing up as a new user or log in as an existing user.
+* Full profile page to display profile info and posts, accessible by the public regardless of login status
+* Filter posts based on the pet type, etc
+* Filter/ search for specific users
+
+## 📷 Demo Images
 
 <img src="https://github.com/evangelenesiyin/chwitter/assets/108106809/79ed8245-af0c-421c-9db6-9cb1ef167727">
 <img src="https://github.com/evangelenesiyin/chwitter/assets/108106809/92036643-2a94-40a4-b1f9-968ab96e974d">
 
-New users will be directed to the profile creation page to fill in their details.
-
 ![image](https://github.com/evangelenesiyin/chwitter/assets/108106809/16f8066b-a438-43b6-b333-89cacac7b8d6)
 
-Pressing the "Let's Go" button, or log in as an existing user to be directed to the Homepage. Users are able to fill in the details in the Chweet Form on top of the page to create a Chweet, where the information related to the pet will be displayed. Users are also able to see Chweets created by other users. They are able to edit or delete the Chweets created by their account as well.
-
 ![image](https://github.com/evangelenesiyin/chwitter/assets/108106809/78373f5e-4e35-4ed9-bd64-440c57a4b9df)
-
-## Project Planning and Development
-
-The steps I took to build this project are outlined below:
-1. Using a Kanban board, I planned out the Ice Box items that I wanted to implement in my project. I placed myself in the shoes of potential users and the administrator overseeing the application. I had to take into consideration the navigation of webpages for visitors with unauthorised access, or when an invalid url has been entered. With these in mind, I drafted the layout, design, features and React components of the application in a wireframe.
-
-View my <a href="https://trello.com/b/TCvigjsp/chwitter">Trello board</a>, <a href="https://www.figma.com/file/fhiR5q3xhMy9YGOEtDw5HM/Chwitter?type=design&node-id=0%3A1&mode=design&t=Wrx1VVoYy24Id6kv-1">Wireframe</a> and <a href="https://lucid.app/lucidchart/73734e41-9da4-4039-bc26-c75b121e1932/edit?viewport_loc=-1757%2C-978%2C1305%2C807%2C0_0&invitationId=inv_2b5f2861-899c-434c-91a8-04232c1eb313">Entity Relationship (ER) Diagram</a>.
-
-2. Build the skeleton and components of the application using React, Tailwind CSS and Ant Design.
-3. Set-up controllers, models, routes, etc, and connect to MongoDB to fetch, delete and patch data.
-4. Set-up AWS S3 Bucket for uploading and removing images.
-
-## Future Developments
-
-As I didn't have enough time before the project deadline to complete some of the Ice Box items, I aim to integrate these into the application:
-
-* Full profile page to display profile info and posts, accessible by the public regardless of login status
-* Filter posts according to type of animal, etc
-* Filter/ search for specific users
